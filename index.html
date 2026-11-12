@@ -1,1554 +1,2388 @@
 
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0b1426">
-<title>Scholar Ledger | Student Money Tracker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0F172A">
+  <meta name="description" content="Scholar Ledger - Student Money Tracker">
+  <title>Scholar Ledger | Student Money Tracker</title>
 
-<style>
-:root {
-  --bg:#0b1426;
-  --card:#152640;
-  --panel:#203858;
-  --line:#365174;
-  --blue:#478bfa;
-  --text:#f5f7ff;
-  --muted:#b2c3dc;
-  --green:#91dfbc;
-  --red:#ffb4be;
-  --yellow:#f5d28a;
-}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-* { box-sizing:border-box; }
+  <style>
+    :root {
+      --bg: #0F172A;
+      --card: #172641;
+      --card-light: #1D3353;
+      --border: #344B6C;
+      --blue: #478BFA;
+      --cyan: #38BDF8;
+      --white: #FFFFFF;
+      --text: #E2E8F0;
+      --muted: #94A3B8;
+      --green: #86EFAC;
+      --red: #FDA4AF;
+      --radius: 18px;
+    }
 
-html {
-  -webkit-text-size-adjust:100%;
-  text-size-adjust:100%;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font:16px/1.5 "Times New Roman",Times,serif;
-}
+    html {
+      width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
 
-button,input,select { font:inherit; }
+    body {
+      margin: 0;
+      min-width: 0;
+      width: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
 
-button {
-  border:0;
-  border-radius:10px;
-  padding:12px;
-  font-weight:bold;
-  cursor:pointer;
-}
+    button,
+    input,
+    select {
+      font: inherit;
+    }
 
-button:disabled { opacity:.5; }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 15px;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.2s;
+    }
 
-header {
-  background:linear-gradient(135deg,#101d35,#194272);
-  padding:28px 18px 70px;
-}
+    button:active {
+      transform: scale(0.98);
+    }
 
-.container {
-  max-width:900px;
-  margin:auto;
-}
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 2px;
+    }
 
-header small {
-  color:#a8caff;
-  letter-spacing:2px;
-  font-size:11px;
-}
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
 
-h1 { font-size:30px; margin:4px 0; }
-h2 { font-size:21px; margin:0 0 12px; }
-h3 { font-size:17px; }
-p { margin:7px 0; }
+    .hidden {
+      display: none !important;
+    }
 
-.muted { color:var(--muted); }
+    .container {
+      width: 100%;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-main {
-  padding:0 14px 60px;
-  margin-top:-40px;
-}
+    /* HEADER */
 
-.card {
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:16px;
-}
+    .hero {
+      position: relative;
+      width: 100%;
+      padding: 72px 16px 48px;
+      text-align: center;
+      background:
+        radial-gradient(
+          ellipse at 50% 0%,
+          rgba(56, 189, 248, 0.12),
+          transparent 70%
+        ),
+        linear-gradient(
+          145deg,
+          #0F172A,
+          #19375B
+        );
+    }
 
-.balance {
-  background:linear-gradient(135deg,#1b3b65,#152640);
-}
+    .hero-inner {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      margin: auto;
+    }
 
-.amount {
-  font-size:32px;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-}
+    .settings-btn {
+      position: absolute;
+      top: -42px;
+      right: 0;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      background: #294669;
+      color: white;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.money,.digits {
-  font-family:Arial,Helvetica,sans-serif!important;
-  font-variant-numeric:lining-nums tabular-nums;
-  font-feature-settings:"lnum" 1,"tnum" 1;
-}
+    .overline {
+      margin: 0 0 10px;
+      font-family: "Inter", sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      color: var(--cyan);
+      text-transform: uppercase;
+    }
 
-label {
-  display:block;
-  color:#a9caff;
-  margin:12px 0 6px;
-}
+    .brand-title {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
 
-input,select {
-  width:100%;
-  min-width:0;
-  background:#0c1a2f;
-  border:1px solid #49658a;
-  border-radius:10px;
-  padding:12px;
-  color:white;
-  font-size:16px;
-}
+    .brand-title .scholar {
+      color: #FFFFFF;
+    }
 
-input:focus,select:focus {
-  outline:2px solid #7bb3ff;
-}
+    .brand-title .ledger {
+      color: #38BDF8;
+    }
 
-input::placeholder { color:#92a6c2; }
+    .tagline {
+      margin: 12px 0 0;
+      color: #E2E8F0;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      line-height: 1.35;
+    }
 
-.primary {
-  background:var(--blue);
-  color:white;
-}
+    .accent-line {
+      width: 56px;
+      height: 3px;
+      margin: 16px auto;
+      border-radius: 10px;
+      background: var(--cyan);
+    }
 
-.secondary {
-  background:#29476d;
-  color:white;
-}
+    .hero-quote {
+      margin: 0;
+      color: #94A3B8;
+      font-size: 16px;
+      font-style: italic;
+      line-height: 1.55;
+      letter-spacing: 0.1px;
+    }
 
-.full {
-  width:100%;
-  margin-top:12px;
-}
+    /* MAIN LAYOUT */
 
-.hidden { display:none!important; }
+    main {
+      width: 100%;
+      padding: 0 16px 36px;
+    }
 
-.between {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
+    .card {
+      width: 100%;
+      min-width: 0;
+      margin: 0 0 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      overflow: hidden;
+    }
 
-.settings {
-  background:#284a73;
-  color:white;
-  font-size:20px;
-}
+    .card h2 {
+      margin: 0 0 10px;
+      color: var(--white);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
 
-.datebox {
-  background:#24476e;
-  padding:12px;
-  border-radius:12px;
-  margin:12px 0;
-}
+    .card h3 {
+      margin: 0;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 15px;
+    }
 
-.tabs {
-  display:flex;
-  gap:8px;
-  margin:12px 0;
-}
+    .muted {
+      color: var(--muted);
+    }
 
-.tabs button {
-  flex:1;
-  background:#2b4464;
-  color:#d2e2f6;
-}
+    .small {
+      font-size: 12px;
+    }
 
-.tabs .active {
-  background:var(--blue);
-  color:white;
-}
+    .number {
+      font-family: "Inter", Arial, sans-serif;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+    }
 
-.check {
-  display:flex;
-  align-items:center;
-  gap:9px;
-  margin:14px 0;
-}
+    .primary {
+      background: var(--blue);
+      color: white;
+    }
 
-.check input { width:auto; }
-.check label { margin:0; }
+    .secondary {
+      background: #294669;
+      color: white;
+    }
 
-.hint {
-  font-size:13px;
-  color:var(--muted);
-}
+    .danger {
+      background: #543344;
+      color: #FFD0D8;
+    }
 
-.tablewrap {
-  overflow-x:auto;
-  border:1px solid var(--line);
-  border-radius:12px;
-  margin-top:12px;
-}
+    .full {
+      width: 100%;
+    }
 
-table { border-collapse:collapse; }
+    .mt {
+      margin-top: 12px;
+    }
 
-.entry {
-  width:100%;
-  min-width:730px;
-  table-layout:fixed;
-}
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #BFDBFE;
+    }
 
-.entry th {
-  background:#25486f;
-  text-align:left;
-  padding:10px 7px;
-  font-size:14px;
-}
+    input,
+    select {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid #4A6487;
+      border-radius: 11px;
+      background: #0D1B31;
+      color: white;
+      font-size: 16px;
+    }
 
-.entry td {
-  padding:7px 5px;
-  border-top:1px solid var(--line);
-}
+    input::placeholder {
+      color: #8194B0;
+    }
 
-.entry input,.entry select {
-  padding:10px 7px;
-  font-size:15px;
-}
+    input[type="checkbox"] {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+      accent-color: var(--blue);
+    }
 
-.entry th:nth-child(1) { width:20%; }
-.entry th:nth-child(2) { width:23%; }
-.entry th:nth-child(3) { width:22%; }
-.entry th:nth-child(4) { width:29%; }
-.entry th:nth-child(5) { width:6%; }
+    input[type="file"] {
+      font-size: 13px;
+      padding: 10px;
+    }
 
-.remove {
-  background:#51374c;
-  color:#ffcbd5;
-  width:100%;
-  padding:8px;
-}
+    /* BALANCE */
 
-.add {
-  width:100%;
-  margin-top:10px;
-  border:1px dashed #6798d5;
-  background:#203d62;
-  color:#d6e6ff;
-}
+    .balance-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      min-height: 142px;
+      padding: 22px;
+      background:
+        linear-gradient(
+          125deg,
+          #234776,
+          #152742
+        );
+    }
 
-.total {
-  background:var(--panel);
-  padding:13px;
-  border-radius:11px;
-  margin-top:12px;
-}
+    .balance-label {
+      font-size: 13px;
+      color: #C8D9F0;
+      font-weight: 600;
+    }
 
-.day {
-  color:#a9caff;
-  font-weight:bold;
-  margin-top:18px;
-}
+    .balance-amount {
+      display: block;
+      width: 100%;
+      margin: 6px 0 8px;
+      color: white;
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: clamp(24px, 6vw, 34px);
+      font-weight: 800;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
 
-.item {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  border-bottom:1px solid var(--line);
-  padding:12px 0;
-}
+    .balance-description {
+      margin: 0;
+      font-size: 12px;
+      color: #B7C9E0;
+    }
 
-.item small {
-  display:block;
-  color:var(--muted);
-  margin-top:4px;
-  overflow-wrap:anywhere;
-}
+    /* TRANSACTION FORM */
 
-.right {
-  text-align:right;
-  min-width:110px;
-}
+    .date-box {
+      padding: 13px;
+      margin: 14px 0;
+      border-radius: 13px;
+      background: #24476E;
+    }
 
-.out { color:var(--red); }
-.in { color:var(--green); }
+    .date-box strong {
+      display: block;
+      color: white;
+      font-size: 13px;
+    }
 
-.linkbtn {
-  background:transparent;
-  color:#b6d4ff;
-  padding:5px;
-  font-size:13px;
-}
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 14px 0;
+    }
 
-.empty {
-  text-align:center;
-  color:var(--muted);
-  padding:18px;
-}
+    .tab {
+      min-width: 0;
+      background: #2B4464;
+      color: #D1DCEC;
+    }
 
-.report {
-  background:#10233b;
-  border:1px solid #42658e;
-  border-radius:13px;
-  padding:14px;
-  margin-top:12px;
-}
+    .tab.active {
+      background: var(--blue);
+      color: white;
+    }
 
-.reportrow {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:7px 0;
-  border-bottom:1px solid var(--line);
-}
+    .checkbox-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 12px 0;
+    }
 
-.reportrow span:last-child {
-  text-align:right;
-}
+    .checkbox-line label {
+      margin: 0;
+      color: var(--text);
+      font-size: 13px;
+    }
 
-.actions {
-  display:flex;
-  gap:8px;
-}
+    .entry-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-top: 12px;
+    }
 
-.actions button { flex:1; }
+    .entry-table th {
+      padding: 10px 7px;
+      background: #25486F;
+      color: #E6F2FF;
+      font-size: 11px;
+      text-align: left;
+    }
 
-footer {
-  text-align:center;
-  color:var(--muted);
-  padding:20px;
-  font-size:13px;
-}
+    .entry-table td {
+      padding: 7px 4px;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
 
-@media(max-width:480px) {
-  .card { padding:15px; }
-  h1 { font-size:27px; }
-  .amount { font-size:28px; }
-}
-</style>
+    .entry-table th:nth-child(1) {
+      width: 19%;
+    }
+
+    .entry-table th:nth-child(2) {
+      width: 22%;
+    }
+
+    .entry-table th:nth-child(3) {
+      width: 22%;
+    }
+
+    .entry-table th:nth-child(4) {
+      width: 29%;
+    }
+
+    .entry-table th:nth-child(5) {
+      width: 8%;
+    }
+
+    .entry-table input,
+    .entry-table select {
+      padding: 9px 6px;
+      font-size: 12px;
+    }
+
+    .remove-row {
+      width: 100%;
+      padding: 9px 0;
+      background: #543344;
+      color: #FFD0D8;
+      font-size: 17px;
+    }
+
+    .add-row {
+      width: 100%;
+      margin-top: 12px;
+      border: 1px dashed #6798D5;
+      background: #203D62;
+      color: #DCEBFF;
+    }
+
+    .entry-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 13px;
+      border-radius: 12px;
+      background: var(--card-light);
+      font-weight: 700;
+    }
+
+    /* HISTORY */
+
+    .history-day {
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #122139;
+    }
+
+    .history-day-header {
+      padding: 14px;
+      background: #203B5D;
+    }
+
+    .history-date {
+      color: #D8EAFF;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .history-count {
+      margin-top: 3px;
+      color: #AFC6E4;
+      font-size: 12px;
+    }
+
+    .history-item {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-main {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .history-info {
+      flex: 1;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .history-info strong {
+      display: block;
+      color: white;
+      font-size: 13px;
+    }
+
+    .history-info small {
+      display: block;
+      margin-top: 3px;
+      color: #A9BBD5;
+      font-size: 11px;
+    }
+
+    .history-amount {
+      flex-shrink: 0;
+      text-align: right;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .expense-color {
+      color: var(--red);
+    }
+
+    .income-color {
+      color: var(--green);
+    }
+
+    .history-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .history-actions button {
+      padding: 6px 9px;
+      background: #294669;
+      color: #CFE5FF;
+      font-size: 11px;
+    }
+
+    .history-actions .delete-btn {
+      color: #FFD0D8;
+      background: #513449;
+    }
+
+    .history-summary {
+      padding: 13px 14px;
+      background: #1A304D;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+
+    .summary-line strong {
+      text-align: right;
+    }
+
+    .empty-state {
+      padding: 22px 10px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* REPORT */
+
+    .report {
+      padding: 14px;
+      margin: 14px 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #102139;
+    }
+
+    .report h3 {
+      margin: 0 0 10px;
+      color: white;
+    }
+
+    .report-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 0;
+      border-bottom: 1px solid #304561;
+      font-size: 12px;
+    }
+
+    .report-row span:last-child {
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .report-heading {
+      margin: 15px 0 6px;
+      color: #D6E9FF;
+      font-weight: 700;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    footer {
+      padding: 10px 16px 28px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* MOBILE FIRST: HP */
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 56px 16px 40px;
+      }
+
+      .settings-btn {
+        top: -38px;
+        right: 0;
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+      }
+
+      .overline {
+        font-size: clamp(10px, 3.2vw, 12px);
+        letter-spacing: 2.5px;
+      }
+
+      .brand-title {
+        font-size: clamp(28px, 9.3vw, 44px);
+        letter-spacing: -0.8px;
+        white-space: nowrap;
+      }
+
+      .tagline {
+        font-size: clamp(16px, 4.8vw, 20px);
+      }
+
+      .hero-quote {
+        font-size: 14.5px;
+      }
+
+      main {
+        padding: 0 12px 30px;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 16px;
+        margin-bottom: 13px;
+      }
+
+      .balance-card {
+        padding: 18px;
+        min-height: 124px;
+      }
+
+      .balance-amount {
+        font-size: clamp(24px, 7vw, 32px);
+      }
+
+      .card h2 {
+        font-size: 18px;
+      }
+
+      /* Form tabel menjadi kartu per baris */
+      .entry-table,
+      .entry-table tbody {
+        display: block;
+        width: 100%;
+      }
+
+      .entry-table thead {
+        display: none;
+      }
+
+      .entry-table tr {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 10px;
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 12px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        background: #102139;
+      }
+
+      .entry-table td {
+        display: block;
+        min-width: 0;
+        width: 100%;
+        padding: 0;
+        border: none;
+      }
+
+      .entry-table td::before {
+        display: block;
+        margin-bottom: 5px;
+        color: #BBD7FA;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .entry-table td:nth-child(1)::before {
+        content: "Nominal (Rp)";
+      }
+
+      .entry-table td:nth-child(2)::before {
+        content: "Keterangan";
+      }
+
+      .entry-table td:nth-child(3)::before {
+        content: "Kategori";
+      }
+
+      .entry-table td:nth-child(4)::before {
+        content: "Ket. Tambahan";
+      }
+
+      .entry-table td:nth-child(5) {
+        grid-column: 1 / -1;
+      }
+
+      .entry-table input,
+      .entry-table select {
+        width: 100%;
+        min-height: 43px;
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .remove-row {
+        width: 100%;
+        padding: 9px;
+        font-size: 12px;
+      }
+
+      .history-main {
+        gap: 8px;
+      }
+
+      .history-amount {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .brand-title {
+        font-size: 8.7vw;
+      }
+
+      .overline {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+      }
+
+      .history-main {
+        flex-direction: column;
+      }
+
+      .history-amount {
+        text-align: left;
+      }
+    }
+
+    @media (min-width: 601px) {
+      main {
+        padding-top: 10px;
+      }
+
+      .card {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <div class="container between">
-    <div>
-      <small>STUDENT MONEY TRACKER</small>
-      <h1>Scholar Ledger</h1>
-      <p class="muted">
-        <i>Less stress, more savings.</i>
+  <!-- HEADER -->
+
+  <header class="hero">
+    <div class="hero-inner">
+
+      <button
+        id="settingsBtn"
+        class="settings-btn hidden"
+        type="button"
+        aria-label="Buka pengaturan"
+        title="Pengaturan"
+      >⚙</button>
+
+      <p class="overline">
+        STUDENT MONEY TRACKER
       </p>
+
+      <h1 class="brand-title">
+        <span class="scholar">Scholar</span>
+        <span class="ledger">Ledger</span>
+      </h1>
+
+      <p class="tagline">
+        Less stress, more savings.
+      </p>
+
+      <div class="accent-line"></div>
+
+      <p class="hero-quote">
+        Kesuksesan itu dimulai dari hal-hal yang kecil.
+      </p>
+
     </div>
+  </header>
 
-    <button id="settingsBtn"
-      class="settings hidden"
-      aria-label="Pengaturan">⚙</button>
-  </div>
-</header>
+  <!-- MAIN -->
 
-<main class="container">
+  <main class="container">
 
-  <!-- PENGATURAN AWAL -->
-  <section id="setup" class="card hidden">
-    <h2 id="setupTitle">Selamat Datang!</h2>
+    <!-- INITIAL SETUP -->
 
-    <p class="muted">
-      Atur saldo awal dan anggaran bulananmu.
-      Pengaturan ini cukup dilakukan satu kali.
-    </p>
+    <section id="setup" class="card hidden">
 
-    <label for="opening">Saldo Awal (Rp)</label>
-    <input id="opening"
-      class="money"
-      type="text"
-      inputmode="numeric"
-      placeholder="8.135.000">
+      <h2 id="setupTitle">
+        Selamat Datang!
+      </h2>
 
-    <p class="hint">
-      Uang yang sudah dimiliki sebelum transaksi pertama.
-    </p>
-
-    <label for="budget">Anggaran Bulanan (Rp)</label>
-    <input id="budget"
-      class="money"
-      type="text"
-      inputmode="numeric"
-      placeholder="1.500.000">
-
-    <p class="hint">
-      Anggaran berlaku sampai kamu mengubahnya.
-    </p>
-
-    <button id="saveSetup" class="primary full">
-      Simpan & Mulai Mencatat
-    </button>
-
-    <button id="cancelSetup"
-      class="secondary full hidden">
-      Kembali
-    </button>
-  </section>
-
-  <!-- DASHBOARD -->
-  <div id="dashboard" class="hidden">
-
-    <section class="card balance">
-      <div class="muted">Saldo Tersedia</div>
-      <div id="balance" class="amount digits">Rp0</div>
-      <p class="hint">
-        Saldo awal + pemasukan − pengeluaran.
-      </p>
-    </section>
-
-    <!-- NOTIFIKASI EVALUASI -->
-    <section id="notification" class="card hidden">
-      <h2>🔔 Evaluasi Bulanan</h2>
       <p class="muted">
-        Laporan keuanganmu sudah siap.
+        Mulai perjalanan keuanganmu dengan
+        mengatur saldo awal dan anggaran bulanan.
       </p>
 
-      <div id="reports"></div>
+      <label for="opening">
+        Saldo Awal (Rp)
+      </label>
 
-      <button id="markRead" class="primary full">
-        Tandai Sudah Dibaca
+      <input
+        id="opening"
+        class="number"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Contoh: 8.135.000"
+      >
+
+      <p class="muted small">
+        Total uang yang kamu miliki sebelum mulai mencatat.
+      </p>
+
+      <label for="budget">
+        Anggaran Bulanan (Rp)
+      </label>
+
+      <input
+        id="budget"
+        class="number"
+        type="text"
+        inputmode="numeric"
+        autocomplete="off"
+        placeholder="Contoh: 1.500.000"
+      >
+
+      <p class="muted small">
+        Target maksimal pengeluaran dalam satu bulan.
+        Anggaran tidak otomatis mengurangi saldo.
+      </p>
+
+      <button
+        id="saveSetup"
+        class="primary full mt"
+        type="button"
+      >
+        Simpan & Mulai Mencatat
       </button>
+
+      <button
+        id="cancelSetup"
+        class="secondary full mt hidden"
+        type="button"
+      >
+        Kembali
+      </button>
+
     </section>
 
-    <!-- CATAT TRANSAKSI -->
-    <section class="card">
-      <h2>Catat Transaksi</h2>
+    <!-- DASHBOARD -->
 
-      <div class="datebox">
-        <strong id="todayLabel"></strong>
-        <div class="hint">
-          Tanggal otomatis mengikuti perangkatmu.
+    <div id="dashboard" class="hidden">
+
+      <!-- BALANCE -->
+
+      <section class="card balance-card">
+
+        <div class="balance-label">
+          Saldo Tersedia
         </div>
-      </div>
 
-      <div class="tabs">
-        <button id="expenseTab"
+        <div id="balance" class="balance-amount number">
+          Rp0
+        </div>
+
+        <p class="balance-description">
+          Saldo awal + pemasukan − pengeluaran.
+        </p>
+
+      </section>
+
+      <!-- MONTHLY NOTIFICATION -->
+
+      <section id="notification" class="card hidden">
+
+        <h2>🔔 Evaluasi Bulanan</h2>
+
+        <p class="muted">
+          Berikut hasil evaluasi keuangan bulan
+          sebelumnya yang belum kamu baca.
+        </p>
+
+        <div id="reports"></div>
+
+        <button
+          id="markRead"
+          class="primary full mt"
           type="button"
-          class="active">Pengeluaran</button>
+        >
+          Tandai Sudah Dibaca
+        </button>
 
-        <button id="incomeTab"
-          type="button">Pemasukan</button>
-      </div>
+      </section>
 
-      <div class="check">
-        <input id="customDate" type="checkbox">
-        <label for="customDate">
-          Catat transaksi tanggal sebelumnya
-        </label>
-      </div>
+      <!-- TRANSACTION FORM -->
 
-      <div id="dateArea" class="hidden">
-        <label for="dateInput">Tanggal Transaksi</label>
-        <input id="dateInput" type="date">
-      </div>
+      <section class="card">
 
-      <p class="hint">
-        Isi tabel berikut. Geser ke samping pada HP.
-      </p>
+        <h2>Catat Transaksi</h2>
 
-      <div class="tablewrap">
-        <table class="entry">
+        <div class="date-box">
+
+          <strong id="todayLabel"></strong>
+
+          <div class="small muted">
+            Tanggal otomatis mengikuti perangkatmu.
+          </div>
+
+        </div>
+
+        <div class="tabs">
+
+          <button
+            id="expenseTab"
+            class="tab active"
+            type="button"
+          >
+            Pengeluaran
+          </button>
+
+          <button
+            id="incomeTab"
+            class="tab"
+            type="button"
+          >
+            Pemasukan
+          </button>
+
+        </div>
+
+        <div class="checkbox-line">
+
+          <input
+            id="customDate"
+            type="checkbox"
+          >
+
+          <label for="customDate">
+            Catat transaksi tanggal sebelumnya
+          </label>
+
+        </div>
+
+        <div id="dateArea" class="hidden">
+
+          <label for="dateInput">
+            Tanggal Transaksi
+          </label>
+
+          <input
+            id="dateInput"
+            type="date"
+          >
+
+        </div>
+
+        <p class="muted small">
+          Isi transaksi di bawah ini.
+          Tekan Tambah Baris jika transaksi hari ini banyak.
+        </p>
+
+        <table class="entry-table">
+
           <thead>
             <tr>
-              <th>Nominal (Rp)</th>
+              <th>Nominal</th>
               <th>Keterangan</th>
               <th>Kategori</th>
               <th>Ket. Tambahan</th>
               <th></th>
             </tr>
           </thead>
+
           <tbody id="rows"></tbody>
+
         </table>
-      </div>
-
-      <button id="addRow" class="add" type="button">
-        ＋ Tambah Baris
-      </button>
-
-      <div class="total between">
-        <span>Total transaksi</span>
-        <strong id="entryTotal" class="digits">Rp0</strong>
-      </div>
-
-      <button id="saveEntries"
-        class="primary full"
-        type="button">
-        Simpan Semua Transaksi
-      </button>
-
-      <p class="hint">
-        Baris kosong dilewati.
-        Keterangan tambahan bersifat opsional.
-      </p>
-    </section>
-
-    <!-- RIWAYAT -->
-    <section class="card">
-      <h2>Riwayat Transaksi</h2>
-      <p class="muted">
-        Catatan tersusun berdasarkan tanggal.
-      </p>
-      <div id="history"></div>
-    </section>
-
-    <!-- CADANGAN -->
-    <section class="card">
-      <h2>Cadangan Data</h2>
-      <p class="muted">
-        Data masih disimpan di browser, belum di cloud.
-        Buat backup secara berkala.
-      </p>
-
-      <div class="actions">
-        <button id="csv" class="secondary"
-          type="button">Ekspor CSV</button>
-
-        <button id="backup" class="secondary"
-          type="button">Backup JSON</button>
-      </div>
-
-      <label for="restoreFile">
-        Pulihkan Backup JSON
-      </label>
-      <input id="restoreFile"
-        type="file"
-        accept=".json,application/json">
-
-      <button id="restore"
-        class="secondary full"
-        type="button">
-        Pulihkan Data
-      </button>
-
-      <p class="hint">
-        Pemulihan menggantikan data yang ada sekarang.
-      </p>
-    </section>
-
-  </div>
-</main>
-
-<footer>
-  Scholar Ledger 4.2 · Less stress, more savings.
-</footer>
-
-<script>
-"use strict";
-
-/* =========================
-   KONFIGURASI PENYIMPANAN
-========================= */
-
-const KEY = "student-money-tracker-v1";
-const SETTINGS = "scholar-ledger-settings-v3";
-const META = "scholar-ledger-meta-v4";
-
-const $ = id => document.getElementById(id);
-
-const outCats = [
-  "Makan & Minum",
-  "Jajan",
-  "Nongkrong",
-  "Transportasi",
-  "Kebutuhan Kuliah",
-  "Tagihan",
-  "Laundry",
-  "Kesehatan",
-  "Belanja",
-  "Tabungan",
-  "Investasi",
-  "Lainnya"
-];
-
-const inCats = [
-  "Uang Bulanan",
-  "Bantuan Keluarga",
-  "Penghasilan",
-  "Hadiah",
-  "Lainnya"
-];
-
-const rupiah = n =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0
-  }).format(n);
-
-/* =========================
-   FORMAT ANGKA
-========================= */
-
-function formatMoney(value) {
-  const digits = String(value ?? "")
-    .replace(/\D/g, "")
-    .replace(/^0+(?=\d)/, "");
-
-  return digits.replace(
-    /\B(?=(\d{3})+(?!\d))/g,
-    "."
-  );
-}
-
-function parseMoney(value) {
-  const digits = String(value ?? "")
-    .replace(/\D/g, "");
-
-  return digits ? Number(digits) : 0;
-}
-
-function attachMoney(input) {
-  input.addEventListener("input", () => {
-    const before = input.value.slice(
-      0,
-      input.selectionStart ?? input.value.length
-    ).replace(/\D/g, "").length;
-
-    const formatted = formatMoney(input.value);
-    input.value = formatted;
-
-    let pos = 0;
-    let count = 0;
-
-    while (
-      pos < formatted.length &&
-      count < before
-    ) {
-      if (/\d/.test(formatted[pos])) count++;
-      pos++;
-    }
-
-    try {
-      input.setSelectionRange(pos, pos);
-    } catch (e) {}
-
-    updateTotal();
-  });
-}
-
-/* =========================
-   TANGGAL
-========================= */
-
-function today() {
-  const d = new Date();
-
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0") + "-" +
-    String(d.getDate()).padStart(2, "0");
-}
-
-function validDate(s) {
-  if (
-    typeof s !== "string" ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(s)
-  ) return false;
-
-  const [y, m, d] = s.split("-").map(Number);
-  const x = new Date(y, m - 1, d);
-
-  return x.getFullYear() === y &&
-    x.getMonth() === m - 1 &&
-    x.getDate() === d;
-}
-
-function fullDate(s) {
-  const [y, m, d] = s.split("-").map(Number);
-
-  return new Intl.DateTimeFormat("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  }).format(new Date(y, m - 1, d));
-}
-
-function currentMonth() {
-  return today().slice(0, 7);
-}
-
-function nextMonth(m) {
-  const [y, n] = m.split("-").map(Number);
-  const d = new Date(y, n, 1);
-
-  return d.getFullYear() + "-" +
-    String(d.getMonth() + 1).padStart(2, "0");
-}
-
-function monthName(m) {
-  const [y, n] = m.split("-").map(Number);
-
-  return new Intl.DateTimeFormat("id-ID", {
-    month: "long",
-    year: "numeric"
-  }).format(new Date(y, n - 1, 1));
-}
-
-/* =========================
-   VALIDASI DAN STORAGE
-========================= */
-
-function validMoney(n) {
-  return Number.isSafeInteger(n) && n >= 0;
-}
-
-function validTransaction(t) {
-  return t &&
-    (t.type === "in" || t.type === "out") &&
-    validMoney(t.amount) &&
-    t.amount > 0 &&
-    validDate(t.date) &&
-    typeof t.note === "string" &&
-    typeof t.category === "string" &&
-    (
-      t.extra === undefined ||
-      typeof t.extra === "string"
-    );
-}
-
-function read(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw === null
-      ? fallback
-      : JSON.parse(raw);
-  } catch (e) {
-    return fallback;
-  }
-}
-
-function save(key, value) {
-  localStorage.setItem(
-    key,
-    JSON.stringify(value)
-  );
-}
-
-function newId() {
-  return (
-    typeof crypto !== "undefined" &&
-    crypto.randomUUID
-  )
-    ? crypto.randomUUID()
-    : String(Date.now()) + Math.random();
-}
-
-/* =========================
-   DATA AWAL
-========================= */
-
-let transactions = read(KEY, []);
-
-if (!Array.isArray(transactions)) {
-  transactions = [];
-}
-
-transactions = transactions
-  .filter(validTransaction)
-  .map((t, i) => ({
-    ...t,
-    id: t.id || "old-" + i
-  }));
-
-let settings = read(SETTINGS, {});
-
-settings = {
-  openingBalance: validMoney(
-    settings.openingBalance
-  )
-    ? settings.openingBalance
-    : 0,
-
-  budgets:
-    settings.budgets &&
-    typeof settings.budgets === "object" &&
-    !Array.isArray(settings.budgets)
-      ? settings.budgets
-      : {}
-};
-
-let meta = read(META, {});
-
-meta = {
-  initialized: meta.initialized === true,
-
-  startMonth:
-    /^\d{4}-(0[1-9]|1[0-2])$/.test(
-      meta.startMonth || ""
-    )
-      ? meta.startMonth
-      : currentMonth(),
-
-  readReports: Array.isArray(meta.readReports)
-    ? meta.readReports
-    : []
-};
-
-let mode = "out";
-
-/* =========================
-   ANGGARAN
-========================= */
-
-function budgetFor(m) {
-  const keys = Object.keys(settings.budgets)
-    .filter(k =>
-      k <= m &&
-      validMoney(settings.budgets[k]) &&
-      settings.budgets[k] > 0
-    )
-    .sort();
-
-  return keys.length
-    ? settings.budgets[keys[keys.length - 1]]
-    : 0;
-}
-
-/* =========================
-   HALAMAN PENGATURAN
-========================= */
-
-function showSetup(edit = false) {
-  $("setup").classList.remove("hidden");
-  $("dashboard").classList.add("hidden");
-  $("settingsBtn").classList.add("hidden");
-
-  $("setupTitle").textContent = edit
-    ? "Pengaturan Keuangan"
-    : "Selamat Datang!";
-
-  $("opening").value = formatMoney(
-    settings.openingBalance
-  );
-
-  $("budget").value = budgetFor(currentMonth())
-    ? formatMoney(budgetFor(currentMonth()))
-    : "";
-
-  $("cancelSetup").classList.toggle(
-    "hidden",
-    !edit
-  );
-}
-
-function showDashboard() {
-  $("setup").classList.add("hidden");
-  $("dashboard").classList.remove("hidden");
-  $("settingsBtn").classList.remove("hidden");
-
-  refreshDate();
-  render();
-}
-
-$("settingsBtn").onclick = () => showSetup(true);
-$("cancelSetup").onclick = showDashboard;
-
-$("saveSetup").onclick = () => {
-  const openingRaw = $("opening").value;
-  const budgetRaw = $("budget").value;
-
-  const opening = parseMoney(openingRaw);
-  const budget = parseMoney(budgetRaw);
-
-  if (
-    !openingRaw ||
-    !budgetRaw ||
-    !validMoney(opening) ||
-    !validMoney(budget) ||
-    budget === 0
-  ) {
-    alert(
-      "Isi saldo awal dan anggaran dengan benar."
-    );
-    return;
-  }
-
-  const nextSettings = {
-    openingBalance: opening,
-    budgets: {
-      ...settings.budgets,
-      [currentMonth()]: budget
-    }
-  };
-
-  const nextMeta = {
-    ...meta,
-    initialized: true,
-    startMonth: meta.initialized
-      ? meta.startMonth
-      : currentMonth()
-  };
-
-  try {
-    save(SETTINGS, nextSettings);
-    save(META, nextMeta);
-
-    settings = nextSettings;
-    meta = nextMeta;
-
-    showDashboard();
-  } catch (e) {
-    alert("Gagal menyimpan pengaturan.");
-  }
-};
-
-/* =========================
-   FORM TRANSAKSI
-========================= */
-
-function refreshDate() {
-  $("todayLabel").textContent =
-    "📅 " + fullDate(today());
-
-  $("dateInput").max = today();
-}
-
-function setMode(t) {
-  mode = t;
-
-  $("expenseTab").classList.toggle(
-    "active",
-    t === "out"
-  );
-
-  $("incomeTab").classList.toggle(
-    "active",
-    t === "in"
-  );
-
-  document.querySelectorAll(".category-input")
-    .forEach(select => {
-      const previous = select.value;
-      const cats = t === "out"
-        ? outCats
-        : inCats;
-
-      select.replaceChildren(
-        ...cats.map(c => new Option(c, c))
+
+        <button
+          id="addRow"
+          class="add-row"
+          type="button"
+        >
+          ＋ Tambah Baris
+        </button>
+
+        <div class="entry-total">
+
+          <span>Total Transaksi</span>
+
+          <strong id="entryTotal" class="number">
+            Rp0
+          </strong>
+
+        </div>
+
+        <button
+          id="saveEntries"
+          class="primary full mt"
+          type="button"
+        >
+          Simpan Semua Transaksi
+        </button>
+
+        <p class="muted small">
+          Baris kosong akan dilewati.
+          Keterangan tambahan bersifat opsional.
+        </p>
+
+      </section>
+
+      <!-- HISTORY -->
+
+      <section class="card">
+
+        <h2>Riwayat Transaksi</h2>
+
+        <p class="muted">
+          Semua transaksi ditampilkan berdasarkan tanggal,
+          termasuk transaksi dari hari-hari sebelumnya.
+        </p>
+
+        <div id="history"></div>
+
+      </section>
+
+      <!-- BACKUP -->
+
+      <section class="card">
+
+        <h2>Cadangan Data</h2>
+
+        <p class="muted">
+          Data saat ini tersimpan di browser perangkat.
+          Buat backup agar riwayat tetap memiliki cadangan.
+        </p>
+
+        <div class="button-group">
+
+          <button
+            id="csv"
+            class="secondary"
+            type="button"
+          >
+            Ekspor CSV
+          </button>
+
+          <button
+            id="backup"
+            class="secondary"
+            type="button"
+          >
+            Backup JSON
+          </button>
+
+        </div>
+
+        <label for="restoreFile">
+          Pulihkan Backup JSON
+        </label>
+
+        <input
+          id="restoreFile"
+          type="file"
+          accept=".json,application/json"
+        >
+
+        <button
+          id="restore"
+          class="secondary full mt"
+          type="button"
+        >
+          Pulihkan Data
+        </button>
+
+        <p class="muted small">
+          Pemulihan akan menggantikan data saat ini
+          dengan data dari file cadangan.
+        </p>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer>
+    Scholar Ledger 4.4 · Less stress, more savings.
+  </footer>
+
+  <script>
+    "use strict";
+
+    /* STORAGE KEYS: KOMPATIBEL DENGAN VERSI LAMA */
+
+    const KEY = "student-money-tracker-v1";
+    const SETTINGS_KEY = "scholar-ledger-settings-v3";
+    const META_KEY = "scholar-ledger-meta-v4";
+
+    const $ = id => document.getElementById(id);
+
+    const expenseCategories = [
+      "Makan & Minum",
+      "Jajan",
+      "Nongkrong",
+      "Transportasi",
+      "Kebutuhan Kuliah",
+      "Tagihan",
+      "Laundry",
+      "Kesehatan",
+      "Belanja",
+      "Tabungan",
+      "Investasi",
+      "Lainnya"
+    ];
+
+    const incomeCategories = [
+      "Uang Bulanan",
+      "Bantuan Keluarga",
+      "Penghasilan",
+      "Hadiah",
+      "Lainnya"
+    ];
+
+    const rupiah = value => {
+      return "Rp" + new Intl.NumberFormat("id-ID", {
+        maximumFractionDigits: 0
+      }).format(value);
+    };
+
+    /* FORMAT RIBUAN */
+
+    function formatMoney(value) {
+      const digits = String(value ?? "")
+        .replace(/\D/g, "")
+        .replace(/^0+(?=\d)/, "");
+
+      return digits.replace(
+        /\B(?=(\d{3})+(?!\d))/g,
+        "."
       );
+    }
 
-      if (cats.includes(previous)) {
-        select.value = previous;
+    function parseMoney(value) {
+      const digits = String(value ?? "")
+        .replace(/\D/g, "");
+
+      return digits === "" ? 0 : Number(digits);
+    }
+
+    function validMoney(value) {
+      return Number.isSafeInteger(value) && value >= 0;
+    }
+
+    function attachMoneyFormatter(input) {
+      input.addEventListener("input", () => {
+        const start = input.selectionStart ?? input.value.length;
+
+        const digitsBefore = input.value
+          .slice(0, start)
+          .replace(/\D/g, "")
+          .length;
+
+        const formatted = formatMoney(input.value);
+
+        input.value = formatted;
+
+        let position = 0;
+        let count = 0;
+
+        while (
+          position < formatted.length &&
+          count < digitsBefore
+        ) {
+          if (/\d/.test(formatted[position])) {
+            count++;
+          }
+
+          position++;
+        }
+
+        try {
+          input.setSelectionRange(position, position);
+        } catch (error) {
+          // Beberapa browser tidak mendukung posisi kursor.
+        }
+
+        updateEntryTotal();
+      });
+    }
+
+    /* DATE HELPERS */
+
+    function today() {
+      const date = new Date();
+
+      return (
+        date.getFullYear() + "-" +
+        String(date.getMonth() + 1).padStart(2, "0") + "-" +
+        String(date.getDate()).padStart(2, "0")
+      );
+    }
+
+    function currentMonth() {
+      return today().slice(0, 7);
+    }
+
+    function validDate(value) {
+      if (
+        typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}$/.test(value)
+      ) {
+        return false;
       }
-    });
-}
 
-$("expenseTab").onclick = () => setMode("out");
-$("incomeTab").onclick = () => setMode("in");
+      const [year, month, day] = value.split("-").map(Number);
+      const date = new Date(year, month - 1, day);
 
-$("customDate").onchange = () => {
-  $("dateArea").classList.toggle(
-    "hidden",
-    !$("customDate").checked
-  );
-
-  if ($("customDate").checked) {
-    $("dateInput").value = today();
-  }
-};
-
-function makeInput(placeholder, cls, max) {
-  const e = document.createElement("input");
-
-  e.type = "text";
-  e.placeholder = placeholder;
-  e.className = cls;
-
-  if (max) e.maxLength = max;
-
-  return e;
-}
-
-function addRow() {
-  const tr = document.createElement("tr");
-
-  const amount = makeInput(
-    "20.000",
-    "money row-amount"
-  );
-
-  amount.inputMode = "numeric";
-  attachMoney(amount);
-
-  const note = makeInput(
-    "Makan siang",
-    "row-note",
-    120
-  );
-
-  const cat = document.createElement("select");
-  cat.className = "category-input";
-
-  const cats = mode === "out"
-    ? outCats
-    : inCats;
-
-  cat.replaceChildren(
-    ...cats.map(c => new Option(c, c))
-  );
-
-  const extra = makeInput(
-    "Opsional",
-    "row-extra",
-    200
-  );
-
-  const remove = document.createElement("button");
-  remove.type = "button";
-  remove.textContent = "×";
-  remove.className = "remove";
-  remove.setAttribute(
-    "aria-label",
-    "Hapus baris"
-  );
-
-  remove.onclick = () => {
-    if ($("rows").children.length === 1) {
-      amount.value = "";
-      note.value = "";
-      extra.value = "";
-    } else {
-      tr.remove();
-    }
-
-    updateTotal();
-  };
-
-  [amount, note, cat, extra, remove]
-    .forEach(element => {
-      const td = document.createElement("td");
-      td.append(element);
-      tr.append(td);
-    });
-
-  $("rows").append(tr);
-  updateTotal();
-}
-
-$("addRow").onclick = addRow;
-
-function updateTotal() {
-  let total = 0;
-
-  document.querySelectorAll(".row-amount")
-    .forEach(e => {
-      total += parseMoney(e.value);
-    });
-
-  $("entryTotal").textContent = rupiah(total);
-}
-
-function resetRows() {
-  $("rows").replaceChildren();
-
-  for (let i = 0; i < 4; i++) {
-    addRow();
-  }
-
-  $("customDate").checked = false;
-  $("dateArea").classList.add("hidden");
-}
-
-function commitTransactions(next) {
-  try {
-    save(KEY, next);
-    transactions = next;
-    render();
-    return true;
-  } catch (e) {
-    alert("Transaksi gagal disimpan.");
-    return false;
-  }
-}
-
-$("saveEntries").onclick = () => {
-  const date = $("customDate").checked
-    ? $("dateInput").value
-    : today();
-
-  if (
-    !validDate(date) ||
-    date > today()
-  ) {
-    alert("Tanggal transaksi tidak valid.");
-    return;
-  }
-
-  const entries = [];
-
-  for (const row of $("rows").children) {
-    const amountRaw = row.querySelector(
-      ".row-amount"
-    ).value;
-
-    const note = row.querySelector(
-      ".row-note"
-    ).value.trim();
-
-    const category = row.querySelector(
-      ".category-input"
-    ).value;
-
-    const extra = row.querySelector(
-      ".row-extra"
-    ).value.trim();
-
-    if (!amountRaw && !note && !extra) {
-      continue;
-    }
-
-    const amount = parseMoney(amountRaw);
-
-    if (
-      !amountRaw ||
-      !validMoney(amount) ||
-      amount === 0 ||
-      !note
-    ) {
-      alert(
-        "Setiap baris yang diisi harus memiliki " +
-        "nominal dan keterangan."
-      );
-      return;
-    }
-
-    entries.push({
-      id: newId(),
-      type: mode,
-      amount,
-      note,
-      category,
-      extra,
-      date,
-      createdAt: new Date().toISOString()
-    });
-  }
-
-  if (!entries.length) {
-    alert("Isi minimal satu transaksi.");
-    return;
-  }
-
-  const next = [...transactions, ...entries];
-
-  if (commitTransactions(next)) {
-    resetRows();
-    alert(
-      entries.length +
-      " transaksi berhasil disimpan."
-    );
-  }
-};
-
-/* =========================
-   RIWAYAT DAN SALDO
-========================= */
-
-function sum(list, type) {
-  return list
-    .filter(t => t.type === type)
-    .reduce((total, t) => total + t.amount, 0);
-}
-
-function node(tag, text, cls) {
-  const e = document.createElement(tag);
-
-  if (text !== undefined) {
-    e.textContent = text;
-  }
-
-  if (cls) e.className = cls;
-
-  return e;
-}
-
-function render() {
-  const income = sum(transactions, "in");
-  const expense = sum(transactions, "out");
-
-  $("balance").textContent = rupiah(
-    settings.openingBalance +
-    income -
-    expense
-  );
-
-  renderHistory();
-  renderNotification();
-}
-
-function renderHistory() {
-  const box = $("history");
-  box.replaceChildren();
-
-  const sorted = [...transactions].sort((a, b) => {
-    const dateDiff = b.date.localeCompare(a.date);
-
-    return dateDiff ||
-      String(b.createdAt || "")
-        .localeCompare(String(a.createdAt || ""));
-  });
-
-  let lastDate = "";
-
-  sorted.forEach(t => {
-    if (t.date !== lastDate) {
-      lastDate = t.date;
-
-      box.append(
-        node("div", fullDate(t.date), "day")
+      return (
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
       );
     }
 
-    const item = node("div", undefined, "item");
-    const left = node("div");
-    const right = node("div", undefined, "right");
+    function fullDate(value) {
+      if (!validDate(value)) {
+        return value;
+      }
 
-    left.append(
-      node("b", t.note),
-      node("small", t.category)
-    );
+      const [year, month, day] = value.split("-").map(Number);
 
-    if (t.extra) {
-      left.append(
-        node("small", "Catatan: " + t.extra)
+      return new Intl.DateTimeFormat("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }).format(new Date(year, month - 1, day));
+    }
+
+    function monthName(value) {
+      const [year, month] = value.split("-").map(Number);
+
+      return new Intl.DateTimeFormat("id-ID", {
+        month: "long",
+        year: "numeric"
+      }).format(new Date(year, month - 1, 1));
+    }
+
+    function nextMonth(value) {
+      const [year, month] = value.split("-").map(Number);
+      const date = new Date(year, month, 1);
+
+      return (
+        date.getFullYear() + "-" +
+        String(date.getMonth() + 1).padStart(2, "0")
       );
     }
 
-    right.append(
-      node(
-        "b",
-        (t.type === "out" ? "−" : "+") +
-        rupiah(t.amount),
-        t.type === "out"
-          ? "out digits"
-          : "in digits"
-      )
-    );
+    /* LOCAL STORAGE */
 
-    const edit = node(
-      "button",
-      "Edit",
-      "linkbtn"
-    );
+    function readStorage(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
 
-    edit.onclick = () => editTransaction(t.id);
+        return raw === null ? fallback : JSON.parse(raw);
+      } catch (error) {
+        return fallback;
+      }
+    }
 
-    const del = node(
-      "button",
-      "Hapus",
-      "linkbtn out"
-    );
+    function writeStorage(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
 
-    del.onclick = () => {
-      if (!confirm("Hapus transaksi ini?")) {
+    function createId() {
+      if (
+        typeof crypto !== "undefined" &&
+        typeof crypto.randomUUID === "function"
+      ) {
+        return crypto.randomUUID();
+      }
+
+      return Date.now().toString(36) +
+        "-" +
+        Math.random().toString(36).slice(2);
+    }
+
+    function validTransaction(transaction) {
+      return (
+        transaction &&
+        typeof transaction === "object" &&
+        (transaction.type === "in" || transaction.type === "out") &&
+        validMoney(transaction.amount) &&
+        transaction.amount > 0 &&
+        validDate(transaction.date) &&
+        typeof transaction.note === "string" &&
+        typeof transaction.category === "string" &&
+        (
+          transaction.extra === undefined ||
+          typeof transaction.extra === "string"
+        )
+      );
+    }
+
+    function normalizeTransaction(transaction, index) {
+      return {
+        ...transaction,
+        id: transaction.id || "legacy-" + index,
+        extra: transaction.extra || ""
+      };
+    }
+
+    const storedTransactions = readStorage(KEY, []);
+
+    let transactions = Array.isArray(storedTransactions)
+      ? storedTransactions
+          .filter(validTransaction)
+          .map(normalizeTransaction)
+      : [];
+
+    const storedSettings = readStorage(SETTINGS_KEY, {});
+
+    let settings = {
+      openingBalance: validMoney(storedSettings.openingBalance)
+        ? storedSettings.openingBalance
+        : 0,
+
+      budgets:
+        storedSettings.budgets &&
+        typeof storedSettings.budgets === "object" &&
+        !Array.isArray(storedSettings.budgets)
+          ? storedSettings.budgets
+          : {}
+    };
+
+    const storedMeta = readStorage(META_KEY, {});
+
+    let meta = {
+      initialized: storedMeta.initialized === true,
+
+      startMonth:
+        /^\d{4}-(0[1-9]|1[0-2])$/.test(
+          storedMeta.startMonth || ""
+        )
+          ? storedMeta.startMonth
+          : currentMonth(),
+
+      readReports: Array.isArray(storedMeta.readReports)
+        ? storedMeta.readReports
+        : []
+    };
+
+    let mode = "out";
+
+    /* BUDGET */
+
+    function budgetFor(month) {
+      const availableMonths = Object.keys(settings.budgets)
+        .filter(key => {
+          return (
+            key <= month &&
+            validMoney(settings.budgets[key]) &&
+            settings.budgets[key] > 0
+          );
+        })
+        .sort();
+
+      if (!availableMonths.length) {
+        return 0;
+      }
+
+      return settings.budgets[
+        availableMonths[availableMonths.length - 1]
+      ];
+    }
+
+    /* SETUP */
+
+    function showSetup(edit = false) {
+      $("setup").classList.remove("hidden");
+      $("dashboard").classList.add("hidden");
+      $("settingsBtn").classList.add("hidden");
+
+      $("setupTitle").textContent = edit
+        ? "Pengaturan Keuangan"
+        : "Selamat Datang!";
+
+      $("opening").value = formatMoney(
+        settings.openingBalance
+      );
+
+      const budget = budgetFor(currentMonth());
+
+      $("budget").value = budget
+        ? formatMoney(budget)
+        : "";
+
+      $("cancelSetup").classList.toggle(
+        "hidden",
+        !edit
+      );
+    }
+
+    function showDashboard() {
+      $("setup").classList.add("hidden");
+      $("dashboard").classList.remove("hidden");
+      $("settingsBtn").classList.remove("hidden");
+
+      refreshDate();
+      render();
+    }
+
+    $("settingsBtn").addEventListener("click", () => {
+      showSetup(true);
+    });
+
+    $("cancelSetup").addEventListener("click", () => {
+      showDashboard();
+    });
+
+    $("saveSetup").addEventListener("click", () => {
+      const openingRaw = $("opening").value.trim();
+      const budgetRaw = $("budget").value.trim();
+
+      const opening = parseMoney(openingRaw);
+      const budget = parseMoney(budgetRaw);
+
+      if (
+        !openingRaw ||
+        !budgetRaw ||
+        !validMoney(opening) ||
+        !validMoney(budget) ||
+        budget <= 0
+      ) {
+        alert(
+          "Isi saldo awal dan anggaran bulanan dengan benar."
+        );
         return;
       }
 
-      commitTransactions(
-        transactions.filter(x => x.id !== t.id)
-      );
-    };
+      const newSettings = {
+        openingBalance: opening,
+        budgets: {
+          ...settings.budgets,
+          [currentMonth()]: budget
+        }
+      };
 
-    right.append(edit, del);
-    item.append(left, right);
-    box.append(item);
-  });
+      const newMeta = {
+        ...meta,
+        initialized: true,
+        startMonth: meta.initialized
+          ? meta.startMonth
+          : currentMonth()
+      };
 
-  if (!sorted.length) {
-    box.append(
-      node(
-        "p",
-        "Belum ada transaksi.",
-        "empty"
-      )
-    );
-  }
-}
+      try {
+        writeStorage(SETTINGS_KEY, newSettings);
+        writeStorage(META_KEY, newMeta);
 
-function editTransaction(id) {
-  const t = transactions.find(x => x.id === id);
-  if (!t) return;
+        settings = newSettings;
+        meta = newMeta;
 
-  const amountRaw = prompt(
-    "Ubah nominal (Rp):",
-    formatMoney(t.amount)
-  );
-
-  if (amountRaw === null) return;
-
-  const amount = parseMoney(amountRaw);
-
-  if (
-    !amountRaw.trim() ||
-    !validMoney(amount) ||
-    amount <= 0
-  ) {
-    alert("Nominal tidak valid.");
-    return;
-  }
-
-  const note = prompt(
-    "Ubah keterangan:",
-    t.note
-  );
-
-  if (note === null) return;
-
-  if (!note.trim()) {
-    alert("Keterangan tidak boleh kosong.");
-    return;
-  }
-
-  const extra = prompt(
-    "Ubah keterangan tambahan:",
-    t.extra || ""
-  );
-
-  if (extra === null) return;
-
-  const updated = {
-    ...t,
-    amount,
-    note: note.trim().slice(0, 120),
-    extra: extra.trim().slice(0, 200)
-  };
-
-  commitTransactions(
-    transactions.map(x =>
-      x.id === id ? updated : x
-    )
-  );
-}
-
-/* =========================
-   EVALUASI BULANAN
-========================= */
-
-function reportFor(month) {
-  const list = transactions.filter(t =>
-    t.date.startsWith(month)
-  );
-
-  const income = sum(list, "in");
-  const expense = sum(list, "out");
-  const budget = budgetFor(month);
-
-  const groups = {};
-  const counts = {};
-
-  list
-    .filter(t => t.type === "out")
-    .forEach(t => {
-      groups[t.category] =
-        (groups[t.category] || 0) + t.amount;
-
-      counts[t.category] =
-        (counts[t.category] || 0) + 1;
+        showDashboard();
+      } catch (error) {
+        alert("Gagal menyimpan pengaturan.");
+      }
     });
 
-  const ranked = Object.entries(groups)
-    .sort((a, b) => b[1] - a[1]);
+    /* TRANSACTION DATE */
 
-  const frequent = Object.entries(counts)
-    .sort((a, b) => b[1] - a[1]);
-
-  const biggest = list
-    .filter(t => t.type === "out")
-    .sort((a, b) => b.amount - a.amount)[0];
-
-  let status = "Belum ada anggaran";
-
-  if (budget > 0) {
-    const ratio = expense / budget;
-
-    status = ratio > 1
-      ? "Melebihi anggaran"
-      : ratio >= 0.8
-        ? "Perlu perhatian"
-        : "Terkendali";
-  }
-
-  return {
-    month,
-    income,
-    expense,
-    budget,
-    remaining: budget - expense,
-    ranked,
-    frequent,
-    biggest,
-    status
-  };
-}
-
-function reportElement(r) {
-  const box = node("div", undefined, "report");
-
-  box.append(
-    node("h3", monthName(r.month))
-  );
-
-  function addReportRow(label, value) {
-    const row = node(
-      "div",
-      undefined,
-      "reportrow"
-    );
-
-    row.append(
-      node("span", label),
-      node("span", value, "digits")
-    );
-
-    box.append(row);
-  }
-
-  addReportRow("Pemasukan", rupiah(r.income));
-  addReportRow("Pengeluaran", rupiah(r.expense));
-
-  addReportRow(
-    "Anggaran",
-    r.budget
-      ? rupiah(r.budget)
-      : "Belum diatur"
-  );
-
-  addReportRow(
-    "Sisa anggaran",
-    r.budget
-      ? rupiah(r.remaining)
-      : "-"
-  );
-
-  addReportRow("Status", r.status);
-
-  box.append(
-    node("h3", "Rincian Pengeluaran")
-  );
-
-  if (!r.ranked.length) {
-    box.append(
-      node(
-        "p",
-        "Belum ada pengeluaran tercatat."
-      )
-    );
-
-    return box;
-  }
-
-  r.ranked.forEach(([category, amount]) => {
-    const percent = (
-      amount / r.expense * 100
-    ).toFixed(1);
-
-    addReportRow(
-      category,
-      rupiah(amount) + " (" + percent + "%)"
-    );
-  });
-
-  box.append(
-    node("h3", "Kesimpulan Bulanan")
-  );
-
-  const [topName, topAmount] = r.ranked[0];
-  const [freqName, freqCount] = r.frequent[0];
-
-  let conclusion =
-    "Pengeluaran terbesar berasal dari " +
-    topName + " sebesar " +
-    rupiah(topAmount) + ". ";
-
-  conclusion +=
-    "Kategori yang paling sering dicatat adalah " +
-    freqName + " sebanyak " +
-    freqCount + " transaksi. ";
-
-  if (r.biggest) {
-    conclusion +=
-      "Transaksi terbesar adalah " +
-      r.biggest.note + " sebesar " +
-      rupiah(r.biggest.amount) + ". ";
-  }
-
-  if (r.budget > 0) {
-    conclusion += r.remaining < 0
-      ? "Pengeluaran sudah melampaui anggaran. "
-      : "Pengeluaran masih berada dalam anggaran. ";
-  }
-
-  conclusion +=
-    "Tinjau kategori terbesar dan transaksi " +
-    "yang paling sering terjadi untuk " +
-    "menentukan penghematan bulan berikutnya.";
-
-  box.append(
-    node("p", conclusion)
-  );
-
-  return box;
-}
-
-function pendingMonths() {
-  const months = [];
-  let month = meta.startMonth;
-  const current = currentMonth();
-
-  for (
-    let i = 0;
-    i < 120 && month < current;
-    i++
-  ) {
-    if (!meta.readReports.includes(month)) {
-      months.push(month);
+    function refreshDate() {
+      $("todayLabel").textContent = "📅 " + fullDate(today());
+      $("dateInput").max = today();
     }
 
-    month = nextMonth(month);
-  }
+    $("customDate").addEventListener("change", () => {
+      const checked = $("customDate").checked;
 
-  return months;
-}
+      $("dateArea").classList.toggle(
+        "hidden",
+        !checked
+      );
 
-function renderNotification() {
-  const pending = pendingMonths();
-  const section = $("notification");
-  const box = $("reports");
+      if (checked) {
+        $("dateInput").value = today();
+      }
+    });
 
-  section.classList.toggle(
-    "hidden",
-    !pending.length
-  );
+    /* TRANSACTION TYPE */
 
-  box.replaceChildren();
+    function setMode(type) {
+      mode = type;
 
-  if (!pending.length) return;
+      $("expenseTab").classList.toggle(
+        "active",
+        type === "out"
+      );
 
-  pending.forEach(month => {
-    box.append(
-      reportElement(reportFor(month))
-    );
-  });
+      $("incomeTab").classList.toggle(
+        "active",
+        type === "in"
+      );
 
-  $("markRead").onclick = () => {
-    try {
-      const next = {
+      const categories = type === "out"
+        ? expenseCategories
+        : incomeCategories;
+
+      document
+        .querySelectorAll(".category-input")
+        .forEach(select => {
+          const previous = select.value;
+
+          select.replaceChildren(
+            ...categories.map(category => {
+              return new Option(category, category);
+            })
+          );
+
+          if (categories.includes(previous)) {
+            select.value = previous;
+          }
+        });
+    }
+
+    $("expenseTab").addEventListener("click", () => {
+      setMode("out");
+    });
+
+    $("incomeTab").addEventListener("click", () => {
+      setMode("in");
+    });
+
+    /* FORM ROWS */
+
+    function makeInput(placeholder, className, maxLength) {
+      const input = document.createElement("input");
+
+      input.type = "text";
+      input.placeholder = placeholder;
+      input.className = className;
+
+      if (maxLength) {
+        input.maxLength = maxLength;
+      }
+
+      return input;
+    }
+
+    function addRow() {
+      const row = document.createElement("tr");
+
+      const amount = makeInput(
+        "15.000",
+        "row-amount number"
+      );
+
+      amount.inputMode = "numeric";
+      attachMoneyFormatter(amount);
+
+      const note = makeInput(
+        "Makan siang",
+        "row-note",
+        120
+      );
+
+      const category = document.createElement("select");
+      category.className = "category-input";
+
+      const categories = mode === "out"
+        ? expenseCategories
+        : incomeCategories;
+
+      categories.forEach(value => {
+        category.add(new Option(value, value));
+      });
+
+      const extra = makeInput(
+        "Opsional",
+        "row-extra",
+        200
+      );
+
+      const remove = document.createElement("button");
+
+      remove.type = "button";
+      remove.className = "remove-row";
+      remove.textContent = "Hapus Baris";
+
+      remove.addEventListener("click", () => {
+        if ($("rows").children.length <= 1) {
+          amount.value = "";
+          note.value = "";
+          extra.value = "";
+        } else {
+          row.remove();
+        }
+
+        updateEntryTotal();
+      });
+
+      [amount, note, category, extra, remove]
+        .forEach(element => {
+          const cell = document.createElement("td");
+
+          cell.appendChild(element);
+          row.appendChild(cell);
+        });
+
+      $("rows").appendChild(row);
+
+      updateEntryTotal();
+    }
+
+    function updateEntryTotal() {
+      let total = 0;
+
+      document
+        .querySelectorAll(".row-amount")
+        .forEach(input => {
+          total += parseMoney(input.value);
+        });
+
+      $("entryTotal").textContent = rupiah(total);
+    }
+
+    function resetRows() {
+      $("rows").replaceChildren();
+
+      for (let i = 0; i < 4; i++) {
+        addRow();
+      }
+
+      $("customDate").checked = false;
+      $("dateArea").classList.add("hidden");
+    }
+
+    $("addRow").addEventListener("click", addRow);
+
+    /* SAVE TRANSACTIONS */
+
+    function commitTransactions(nextTransactions) {
+      try {
+        writeStorage(KEY, nextTransactions);
+
+        transactions = nextTransactions;
+
+        render();
+
+        return true;
+      } catch (error) {
+        alert(
+          "Transaksi gagal disimpan. Periksa ruang penyimpanan browser."
+        );
+
+        return false;
+      }
+    }
+
+    $("saveEntries").addEventListener("click", () => {
+      const date = $("customDate").checked
+        ? $("dateInput").value
+        : today();
+
+      if (!validDate(date) || date > today()) {
+        alert("Tanggal transaksi tidak valid.");
+        return;
+      }
+
+      const entries = [];
+
+      for (const row of $("rows").children) {
+        const amountRaw = row
+          .querySelector(".row-amount")
+          .value
+          .trim();
+
+        const note = row
+          .querySelector(".row-note")
+          .value
+          .trim();
+
+        const category = row
+          .querySelector(".category-input")
+          .value;
+
+        const extra = row
+          .querySelector(".row-extra")
+          .value
+          .trim();
+
+        if (
+          !amountRaw &&
+          !note &&
+          !extra
+        ) {
+          continue;
+        }
+
+        const amount = parseMoney(amountRaw);
+
+        if (
+          !amountRaw ||
+          !validMoney(amount) ||
+          amount <= 0 ||
+          !note
+        ) {
+          alert(
+            "Setiap baris yang diisi harus memiliki nominal dan keterangan."
+          );
+          return;
+        }
+
+        entries.push({
+          id: createId(),
+          type: mode,
+          amount: amount,
+          note: note,
+          category: category,
+          extra: extra,
+          date: date,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      if (!entries.length) {
+        alert("Isi minimal satu transaksi.");
+        return;
+      }
+
+      const nextTransactions = [
+        ...transactions,
+        ...entries
+      ];
+
+      if (commitTransactions(nextTransactions)) {
+        resetRows();
+
+        alert(
+          entries.length +
+          " transaksi berhasil disimpan."
+        );
+      }
+    });
+
+    /* CALCULATIONS */
+
+    function sumTransactions(list, type) {
+      return list
+        .filter(transaction => transaction.type === type)
+        .reduce((sum, transaction) => {
+          return sum + transaction.amount;
+        }, 0);
+    }
+
+    function makeElement(tag, text, className) {
+      const element = document.createElement(tag);
+
+      if (text !== undefined) {
+        element.textContent = text;
+      }
+
+      if (className) {
+        element.className = className;
+      }
+
+      return element;
+    }
+
+    /* RENDER DASHBOARD */
+
+    function render() {
+      const income = sumTransactions(transactions, "in");
+      const expense = sumTransactions(transactions, "out");
+
+      const balance =
+        settings.openingBalance +
+        income -
+        expense;
+
+      $("balance").textContent = rupiah(balance);
+
+      renderHistory();
+      renderNotification();
+    }
+
+    /* FULL TRANSACTION HISTORY */
+
+    function renderHistory() {
+      const container = $("history");
+
+      container.replaceChildren();
+
+      if (!transactions.length) {
+        container.appendChild(
+          makeElement(
+            "div",
+            "Belum ada transaksi yang tercatat.",
+            "empty-state"
+          )
+        );
+        return;
+      }
+
+      /*
+        Tidak ada batas jumlah transaksi.
+        Semua transaksi dikelompokkan berdasarkan tanggal.
+      */
+
+      const sorted = [...transactions].sort((a, b) => {
+        const dateCompare = b.date.localeCompare(a.date);
+
+        if (dateCompare !== 0) {
+          return dateCompare;
+        }
+
+        return String(b.createdAt || "")
+          .localeCompare(String(a.createdAt || ""));
+      });
+
+      const groups = new Map();
+
+      sorted.forEach(transaction => {
+        if (!groups.has(transaction.date)) {
+          groups.set(transaction.date, []);
+        }
+
+        groups.get(transaction.date).push(transaction);
+      });
+
+      for (const [date, items] of groups) {
+        const dayCard = makeElement(
+          "div",
+          undefined,
+          "history-day"
+        );
+
+        const header = makeElement(
+          "div",
+          undefined,
+          "history-day-header"
+        );
+
+        header.appendChild(
+          makeElement(
+            "div",
+            fullDate(date),
+            "history-date"
+          )
+        );
+
+        header.appendChild(
+          makeElement(
+            "div",
+            items.length + " transaksi tercatat",
+            "history-count"
+          )
+        );
+
+        dayCard.appendChild(header);
+
+        /*
+          Semua transaksi pada tanggal tersebut
+          ditampilkan satu per satu.
+        */
+
+        items.forEach(transaction => {
+          const item = makeElement(
+            "div",
+            undefined,
+            "history-item"
+          );
+
+          const main = makeElement(
+            "div",
+            undefined,
+            "history-main"
+          );
+
+          const info = makeElement(
+            "div",
+            undefined,
+            "history-info"
+          );
+
+          info.appendChild(
+            makeElement("strong", transaction.note)
+          );
+
+          info.appendChild(
+            makeElement("small", transaction.category)
+          );
+
+          if (transaction.extra) {
+            info.appendChild(
+              makeElement(
+                "small",
+                "Catatan: " + transaction.extra
+              )
+            );
+          }
+
+          const amount = makeElement(
+            "div",
+            (
+              transaction.type === "out"
+                ? "−"
+                : "+"
+            ) + rupiah(transaction.amount),
+            "history-amount number " +
+            (
+              transaction.type === "out"
+                ? "expense-color"
+                : "income-color"
+            )
+          );
+
+          main.appendChild(info);
+          main.appendChild(amount);
+
+          const actions = makeElement(
+            "div",
+            undefined,
+            "history-actions"
+          );
+
+          const editButton = makeElement(
+            "button",
+            "Edit"
+          );
+
+          editButton.type = "button";
+
+          editButton.addEventListener("click", () => {
+            editTransaction(transaction.id);
+          });
+
+          const deleteButton = makeElement(
+            "button",
+            "Hapus",
+            "delete-btn"
+          );
+
+          deleteButton.type = "button";
+
+          deleteButton.addEventListener("click", () => {
+            const confirmed = confirm(
+              "Hapus transaksi " +
+              transaction.note +
+              " sebesar " +
+              rupiah(transaction.amount) +
+              "?"
+            );
+
+            if (!confirmed) {
+              return;
+            }
+
+            commitTransactions(
+              transactions.filter(item => {
+                return item.id !== transaction.id;
+              })
+            );
+          });
+
+          actions.appendChild(editButton);
+          actions.appendChild(deleteButton);
+
+          item.appendChild(main);
+          item.appendChild(actions);
+
+          dayCard.appendChild(item);
+        });
+
+        /* DAILY TOTAL */
+
+        const totalIncome = sumTransactions(items, "in");
+        const totalExpense = sumTransactions(items, "out");
+
+        const summary = makeElement(
+          "div",
+          undefined,
+          "history-summary"
+        );
+
+        const incomeLine = makeElement(
+          "div",
+          undefined,
+          "summary-line"
+        );
+
+        incomeLine.appendChild(
+          makeElement("span", "Total Pemasukan")
+        );
+
+        incomeLine.appendChild(
+          makeElement(
+            "strong",
+            rupiah(totalIncome),
+            "income-color number"
+          )
+        );
+
+        const expenseLine = makeElement(
+          "div",
+          undefined,
+          "summary-line"
+        );
+
+        expenseLine.appendChild(
+          makeElement("span", "Total Pengeluaran")
+        );
+
+        expenseLine.appendChild(
+          makeElement(
+            "strong",
+            rupiah(totalExpense),
+            "expense-color number"
+          )
+        );
+
+        summary.appendChild(incomeLine);
+        summary.appendChild(expenseLine);
+
+        dayCard.appendChild(summary);
+
+        container.appendChild(dayCard);
+      }
+    }
+
+    /* EDIT TRANSACTION */
+
+    function editTransaction(id) {
+      const transaction = transactions.find(item => {
+        return item.id === id;
+      });
+
+      if (!transaction) {
+        return;
+      }
+
+      const rawAmount = prompt(
+        "Ubah nominal transaksi:",
+        formatMoney(transaction.amount)
+      );
+
+      if (rawAmount === null) {
+        return;
+      }
+
+      const amount = parseMoney(rawAmount);
+
+      if (
+        !rawAmount.trim() ||
+        !validMoney(amount) ||
+        amount <= 0
+      ) {
+        alert("Nominal tidak valid.");
+        return;
+      }
+
+      const note = prompt(
+        "Ubah keterangan:",
+        transaction.note
+      );
+
+      if (note === null) {
+        return;
+      }
+
+      if (!note.trim()) {
+        alert("Keterangan tidak boleh kosong.");
+        return;
+      }
+
+      const extra = prompt(
+        "Ubah keterangan tambahan:",
+        transaction.extra || ""
+      );
+
+      if (extra === null) {
+        return;
+      }
+
+      const updated = {
+        ...transaction,
+        amount: amount,
+        note: note.trim().slice(0, 120),
+        extra: extra.trim().slice(0, 200)
+      };
+
+      const nextTransactions = transactions.map(item => {
+        return item.id === id ? updated : item;
+      });
+
+      commitTransactions(nextTransactions);
+    }
+
+    /* MONTHLY REPORT */
+
+    function reportFor(month) {
+      const list = transactions.filter(transaction => {
+        return transaction.date.startsWith(month);
+      });
+
+      const income = sumTransactions(list, "in");
+      const expense = sumTransactions(list, "out");
+      const budget = budgetFor(month);
+
+      const categoryTotals = {};
+      const categoryCounts = {};
+
+      list
+        .filter(transaction => transaction.type === "out")
+        .forEach(transaction => {
+          const category = transaction.category;
+
+          categoryTotals[category] =
+            (categoryTotals[category] || 0) +
+            transaction.amount;
+
+          categoryCounts[category] =
+            (categoryCounts[category] || 0) + 1;
+        });
+
+      const ranked = Object.entries(categoryTotals)
+        .sort((a, b) => b[1] - a[1]);
+
+      const frequent = Object.entries(categoryCounts)
+        .sort((a, b) => b[1] - a[1]);
+
+      const biggest = list
+        .filter(transaction => transaction.type === "out")
+        .sort((a, b) => b.amount - a.amount)[0];
+
+      let status = "Belum ada anggaran";
+
+      if (budget > 0) {
+        const ratio = expense / budget;
+
+        if (ratio > 1) {
+          status = "Melebihi anggaran";
+        } else if (ratio >= 0.8) {
+          status = "Mendekati batas anggaran";
+        } else {
+          status = "Dalam anggaran";
+        }
+      }
+
+      return {
+        month,
+        income,
+        expense,
+        budget,
+        remaining: budget - expense,
+        ranked,
+        frequent,
+        biggest,
+        status
+      };
+    }
+
+    function reportElement(report) {
+      const box = makeElement(
+        "div",
+        undefined,
+        "report"
+      );
+
+      box.appendChild(
+        makeElement("h3", monthName(report.month))
+      );
+
+      function addRow(label, value) {
+        const row = makeElement(
+          "div",
+          undefined,
+          "report-row"
+        );
+
+        row.appendChild(
+          makeElement("span", label)
+        );
+
+        row.appendChild(
+          makeElement("span", value, "number")
+        );
+
+        box.appendChild(row);
+      }
+
+      addRow("Pemasukan", rupiah(report.income));
+      addRow("Pengeluaran", rupiah(report.expense));
+
+      addRow(
+        "Anggaran Bulanan",
+        report.budget
+          ? rupiah(report.budget)
+          : "Belum diatur"
+      );
+
+      addRow(
+        "Sisa Anggaran",
+        report.budget
+          ? rupiah(report.remaining)
+          : "-"
+      );
+
+      addRow("Status", report.status);
+
+      box.appendChild(
+        makeElement(
+          "div",
+          "Rincian Pengeluaran",
+          "report-heading"
+        )
+      );
+
+      if (!report.ranked.length) {
+        box.appendChild(
+          makeElement(
+            "p",
+            "Belum ada pengeluaran tercatat.",
+            "muted small"
+          )
+        );
+
+        return box;
+      }
+
+      report.ranked.forEach(([category, amount]) => {
+        const percentage = report.expense > 0
+          ? (amount / report.expense * 100).toFixed(1)
+          : "0";
+
+        addRow(
+          category,
+          rupiah(amount) + " (" + percentage + "%)"
+        );
+      });
+
+      box.appendChild(
+        makeElement(
+          "div",
+          "Kesimpulan Bulanan",
+          "report-heading"
+        )
+      );
+
+      const [topCategory, topAmount] = report.ranked[0];
+      const [frequentCategory, frequentCount] = report.frequent[0];
+
+      let conclusion =
+        "Pengeluaran terbesar berasal dari kategori " +
+        topCategory +
+        " sebesar " +
+        rupiah(topAmount) +
+        ". ";
+
+      conclusion +=
+        "Kategori yang paling sering dicatat adalah " +
+        frequentCategory +
+        " sebanyak " +
+        frequentCount +
+        " transaksi. ";
+
+      if (report.biggest) {
+        conclusion +=
+          "Transaksi terbesar adalah " +
+          report.biggest.note +
+          " sebesar " +
+          rupiah(report.biggest.amount) +
+          ". ";
+      }
+
+      if (report.budget > 0) {
+        conclusion += report.remaining < 0
+          ? "Pengeluaran bulan ini melampaui anggaran. "
+          : "Pengeluaran masih berada dalam anggaran. ";
+      }
+
+      conclusion +=
+        "Perhatikan pengeluaran terbesar untuk " +
+        "menyusun rencana keuangan bulan berikutnya.";
+
+      box.appendChild(
+        makeElement("p", conclusion, "small")
+      );
+
+      return box;
+    }
+
+    function pendingMonths() {
+      const months = [];
+      const current = currentMonth();
+
+      let month = meta.startMonth;
+
+      for (let i = 0; i < 120 && month < current; i++) {
+        if (!meta.readReports.includes(month)) {
+          months.push(month);
+        }
+
+        month = nextMonth(month);
+      }
+
+      return months;
+    }
+
+    function renderNotification() {
+      const pending = pendingMonths();
+      const notification = $("notification");
+      const reports = $("reports");
+
+      notification.classList.toggle(
+        "hidden",
+        pending.length === 0
+      );
+
+      reports.replaceChildren();
+
+      pending.forEach(month => {
+        reports.appendChild(
+          reportElement(reportFor(month))
+        );
+      });
+    }
+
+    $("markRead").addEventListener("click", () => {
+      const pending = pendingMonths();
+
+      const nextMeta = {
         ...meta,
         readReports: [
           ...new Set([
@@ -1558,271 +2392,270 @@ function renderNotification() {
         ]
       };
 
-      save(META, next);
-      meta = next;
-      renderNotification();
-    } catch (e) {
-      alert(
-        "Gagal menyimpan status laporan."
-      );
-    }
-  };
-}
+      try {
+        writeStorage(META_KEY, nextMeta);
 
-/* =========================
-   EKSPOR DAN BACKUP
-========================= */
+        meta = nextMeta;
 
-function download(content, filename, mime) {
-  const blob = new Blob(
-    [content],
-    { type: mime }
-  );
-
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-
-  a.href = url;
-  a.download = filename;
-
-  document.body.append(a);
-  a.click();
-  a.remove();
-
-  setTimeout(() => {
-    URL.revokeObjectURL(url);
-  }, 1000);
-}
-
-$("csv").onclick = () => {
-  const rows = [
-    [
-      "Tanggal",
-      "Jenis",
-      "Kategori",
-      "Keterangan",
-      "Keterangan Tambahan",
-      "Nominal"
-    ],
-
-    ...transactions.map(t => [
-      t.date,
-      t.type,
-      t.category,
-      t.note,
-      t.extra || "",
-      t.amount
-    ])
-  ];
-
-  const csv = rows.map(row =>
-    row.map(value =>
-      '"' +
-      String(value).replace(/"/g, '""') +
-      '"'
-    ).join(",")
-  ).join("\r\n");
-
-  download(
-    "\uFEFF" + csv,
-    "scholar-ledger-transactions.csv",
-    "text/csv;charset=utf-8"
-  );
-};
-
-$("backup").onclick = () => {
-  const backup = {
-    app: "Scholar Ledger",
-    version: "4.2",
-    exportedAt: new Date().toISOString(),
-    transactions,
-    settings,
-    meta
-  };
-
-  download(
-    JSON.stringify(backup, null, 2),
-    "scholar-ledger-backup.json",
-    "application/json"
-  );
-};
-
-/* =========================
-   PEMULIHAN BACKUP
-========================= */
-
-$("restore").onclick = async () => {
-  const file = $("restoreFile").files[0];
-
-  if (!file) {
-    alert("Pilih file JSON terlebih dahulu.");
-    return;
-  }
-
-  try {
-    const data = JSON.parse(
-      await file.text()
-    );
-
-    const list = Array.isArray(data)
-      ? data
-      : data.transactions;
-
-    if (
-      !Array.isArray(list) ||
-      !list.every(validTransaction)
-    ) {
-      throw new Error(
-        "Format transaksi tidak valid."
-      );
-    }
-
-    const newSettings =
-      data.settings || settings;
-
-    if (
-      !validMoney(newSettings.openingBalance) ||
-      !newSettings.budgets ||
-      typeof newSettings.budgets !== "object" ||
-      Array.isArray(newSettings.budgets)
-    ) {
-      throw new Error(
-        "Format pengaturan tidak valid."
-      );
-    }
-
-    for (
-      const [month, budget]
-      of Object.entries(newSettings.budgets)
-    ) {
-      if (
-        !/^\d{4}-(0[1-9]|1[0-2])$/.test(month) ||
-        !validMoney(budget)
-      ) {
-        throw new Error(
-          "Data anggaran tidak valid."
-        );
+        renderNotification();
+      } catch (error) {
+        alert("Gagal menyimpan status laporan.");
       }
+    });
+
+    /* DOWNLOAD HELPER */
+
+    function downloadFile(content, filename, mimeType) {
+      const blob = new Blob(
+        [content],
+        { type: mimeType }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+
+      anchor.href = url;
+      anchor.download = filename;
+
+      document.body.appendChild(anchor);
+
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1000);
     }
 
-    if (!confirm(
-      "Data saat ini akan digantikan oleh backup. Lanjutkan?"
-    )) return;
+    /* EXPORT CSV */
 
-    const newTransactions = list.map(
-      (t, i) => ({
-        ...t,
-        id: t.id || "restored-" + i
-      })
-    );
+    $("csv").addEventListener("click", () => {
+      const rows = [
+        [
+          "Tanggal",
+          "Jenis",
+          "Kategori",
+          "Keterangan",
+          "Keterangan Tambahan",
+          "Nominal"
+        ],
 
-    const newMeta = {
-      initialized: true,
-      startMonth:
-        /^\d{4}-(0[1-9]|1[0-2])$/.test(
-          data.meta?.startMonth || ""
-        )
-          ? data.meta.startMonth
-          : currentMonth(),
+        ...transactions.map(transaction => [
+          transaction.date,
+          transaction.type === "out"
+            ? "Pengeluaran"
+            : "Pemasukan",
+          transaction.category,
+          transaction.note,
+          transaction.extra || "",
+          transaction.amount
+        ])
+      ];
 
-      readReports:
-        Array.isArray(data.meta?.readReports)
-          ? data.meta.readReports
-          : []
-    };
+      const csv = rows.map(row => {
+        return row.map(value => {
+          return '"' +
+            String(value).replace(/"/g, '""') +
+            '"';
+        }).join(",");
+      }).join("\r\n");
 
-    const keys = [KEY, SETTINGS, META];
-    const previous = keys.map(
-      key => localStorage.getItem(key)
-    );
+      downloadFile(
+        "\uFEFF" + csv,
+        "scholar-ledger-transaksi.csv",
+        "text/csv;charset=utf-8"
+      );
+    });
 
-    try {
-      save(KEY, newTransactions);
-      save(SETTINGS, newSettings);
-      save(META, newMeta);
-    } catch (e) {
-      keys.forEach((key, i) => {
+    /* BACKUP JSON */
+
+    $("backup").addEventListener("click", () => {
+      const backup = {
+        app: "Scholar Ledger",
+        version: "4.4",
+        exportedAt: new Date().toISOString(),
+        transactions: transactions,
+        settings: settings,
+        meta: meta
+      };
+
+      downloadFile(
+        JSON.stringify(backup, null, 2),
+        "scholar-ledger-backup.json",
+        "application/json"
+      );
+    });
+
+    /* RESTORE JSON */
+
+    $("restore").addEventListener("click", async () => {
+      const file = $("restoreFile").files[0];
+
+      if (!file) {
+        alert("Pilih file backup JSON terlebih dahulu.");
+        return;
+      }
+
+      try {
+        const content = await file.text();
+        const data = JSON.parse(content);
+
+        if (
+          !data ||
+          typeof data !== "object" ||
+          !Array.isArray(data.transactions) ||
+          !data.settings ||
+          typeof data.settings !== "object"
+        ) {
+          throw new Error("Format backup tidak sesuai.");
+        }
+
+        if (!data.transactions.every(validTransaction)) {
+          throw new Error("Ada transaksi yang tidak valid.");
+        }
+
+        if (
+          !validMoney(data.settings.openingBalance) ||
+          !data.settings.budgets ||
+          typeof data.settings.budgets !== "object" ||
+          Array.isArray(data.settings.budgets)
+        ) {
+          throw new Error("Pengaturan backup tidak valid.");
+        }
+
+        for (
+          const [month, budget]
+          of Object.entries(data.settings.budgets)
+        ) {
+          if (
+            !/^\d{4}-(0[1-9]|1[0-2])$/.test(month) ||
+            !validMoney(budget)
+          ) {
+            throw new Error("Data anggaran tidak valid.");
+          }
+        }
+
+        const confirmed = confirm(
+          "Semua data saat ini akan digantikan " +
+          "oleh data dari backup JSON. Lanjutkan?"
+        );
+
+        if (!confirmed) {
+          return;
+        }
+
+        const newTransactions = data.transactions.map(
+          normalizeTransaction
+        );
+
+        const newSettings = {
+          openingBalance: data.settings.openingBalance,
+          budgets: { ...data.settings.budgets }
+        };
+
+        const backupMeta = data.meta || {};
+
+        const newMeta = {
+          initialized: true,
+
+          startMonth:
+            /^\d{4}-(0[1-9]|1[0-2])$/.test(
+              backupMeta.startMonth || ""
+            )
+              ? backupMeta.startMonth
+              : currentMonth(),
+
+          readReports: Array.isArray(backupMeta.readReports)
+            ? backupMeta.readReports
+            : []
+        };
+
+        /*
+          Simpan salinan kondisi lama sementara.
+          Jika proses pemulihan gagal, coba kembalikan.
+        */
+
+        const oldTransactions = localStorage.getItem(KEY);
+        const oldSettings = localStorage.getItem(SETTINGS_KEY);
+        const oldMeta = localStorage.getItem(META_KEY);
+
         try {
-          if (previous[i] === null) {
-            localStorage.removeItem(key);
-          } else {
-            localStorage.setItem(
-              key,
-              previous[i]
+          writeStorage(KEY, newTransactions);
+          writeStorage(SETTINGS_KEY, newSettings);
+          writeStorage(META_KEY, newMeta);
+        } catch (saveError) {
+          try {
+            if (oldTransactions === null) {
+              localStorage.removeItem(KEY);
+            } else {
+              localStorage.setItem(KEY, oldTransactions);
+            }
+
+            if (oldSettings === null) {
+              localStorage.removeItem(SETTINGS_KEY);
+            } else {
+              localStorage.setItem(SETTINGS_KEY, oldSettings);
+            }
+
+            if (oldMeta === null) {
+              localStorage.removeItem(META_KEY);
+            } else {
+              localStorage.setItem(META_KEY, oldMeta);
+            }
+          } catch (rollbackError) {
+            alert(
+              "Pemulihan gagal dan data lama tidak dapat " +
+              "dipastikan kembali. Jangan hapus file backup."
             );
           }
-        } catch (err) {
-          console.error(err);
+
+          throw saveError;
         }
-      });
 
-      throw e;
-    }
+        transactions = newTransactions;
+        settings = newSettings;
+        meta = newMeta;
 
-    transactions = newTransactions;
-    settings = newSettings;
-    meta = newMeta;
+        $("restoreFile").value = "";
+
+        showDashboard();
+
+        alert("Data berhasil dipulihkan.");
+      } catch (error) {
+        alert(
+          "Gagal memulihkan backup: " +
+          error.message
+        );
+      }
+    });
+
+    /* REFRESH WHEN USER RETURNS */
+
+    document.addEventListener("visibilitychange", () => {
+      if (
+        !document.hidden &&
+        meta.initialized
+      ) {
+        refreshDate();
+        render();
+      }
+    });
+
+    /* INITIALIZATION */
+
+    attachMoneyFormatter($("opening"));
+    attachMoneyFormatter($("budget"));
 
     resetRows();
-    showDashboard();
+    setMode("out");
 
-    alert("Backup berhasil dipulihkan.");
-  } catch (e) {
-    alert(
-      "Gagal memulihkan data: " + e.message
-    );
-  }
-};
-
-/* =========================
-   INISIALISASI WEBSITE
-========================= */
-
-attachMoney($("opening"));
-attachMoney($("budget"));
-
-resetRows();
-refreshDate();
-
-if (
-  !meta.initialized &&
-  budgetFor(currentMonth()) > 0
-) {
-  meta.initialized = true;
-
-  try {
-    save(META, meta);
-  } catch (e) {}
-}
-
-if (meta.initialized) {
-  showDashboard();
-} else {
-  showSetup(false);
-}
-
-function refreshApp() {
-  refreshDate();
-
-  if (meta.initialized) {
-    render();
-  }
-}
-
-document.addEventListener(
-  "visibilitychange",
-  () => {
-    if (!document.hidden) {
-      refreshApp();
+    if (meta.initialized) {
+      showDashboard();
+    } else {
+      showSetup(false);
     }
-  }
-);
 
-window.addEventListener(
-  "focus",
-  refreshApp
-);
+  </script>
 
-</script>
 </body>
 </html>
