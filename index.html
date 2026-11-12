@@ -2,2028 +2,1129 @@
 
 
 
+
 <!DOCTYPE html>
-
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1426">
-
 <title>Scholar Ledger | Student Money Tracker</title>
-
 <style>
-
-:root {
-
-  --bg:#0b1426;
-
-  --card:#14243c;
-
-  --card2:#1c3251;
-
-  --line:#304665;
-
-  --blue:#4388f5;
-
-  --light:#a9caff;
-
-  --white:#f3f6ff;
-
-  --muted:#a7b9d3;
-
-  --green:#91dfbc;
-
-  --red:#ffb1b8;
-
-  --yellow:#f5d28a;
-
+:root{
+ --bg:#0b1426;
+ --card:#14243c;
+ --panel:#1e3453;
+ --line:#304665;
+ --blue:#4388f5;
+ --light:#a9caff;
+ --white:#f3f6ff;
+ --muted:#a7b9d3;
+ --green:#91dfbc;
+ --red:#ffb1b8;
+ --yellow:#f5d28a
 }
-
-* {box-sizing:border-box}
-
-body {
-
-  margin:0;
-
-  background:var(--bg);
-
-  color:var(--white);
-
-  font-family:Georgia,"Times New Roman",serif;
-
-  line-height:1.5;
-
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--white);
+ font:16px/1.5 "Times New Roman",Times,serif
 }
-
-button,input,select {font:inherit}
-
-button {cursor:pointer}
-
-header {
-
-  background:linear-gradient(145deg,#101d36,#183d6d);
-
-  padding:30px 20px 72px;
-
+button,input,select{font:inherit}
+button{cursor:pointer}
+header{
+ background:linear-gradient(145deg,#101d36,#183d6d);
+ padding:28px 20px 68px
 }
-
-.header-inner,.wrap {
-
-  max-width:700px;
-
-  margin:auto;
-
+.head,.wrap{max-width:680px;margin:auto}
+header small{
+ color:var(--light);
+ letter-spacing:2px;
+ font-size:11px
 }
-
-header small {
-
-  color:var(--light);
-
-  letter-spacing:2px;
-
-  font-size:11px;
-
+h1{font-size:32px;margin:4px 0}
+h2{font-size:21px;margin:0 0 12px}
+h3{font-size:17px;margin:15px 0 8px}
+p{margin:7px 0}
+.muted{color:var(--muted)}
+.wrap{padding:0 16px 75px;margin-top:-39px}
+.card{
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:19px;
+ padding:19px;
+ margin-bottom:16px
 }
-
-h1 {font-size:32px;margin:5px 0}
-
-h2 {font-size:20px;margin:0 0 14px}
-
-h3 {font-size:16px;margin:14px 0 8px}
-
-p {margin:6px 0}
-
-.muted {color:var(--muted)}
-
-.wrap {
-
-  padding:0 16px 80px;
-
-  margin-top:-43px;
-
+.balance{
+ background:linear-gradient(145deg,#1b3559,#14243c)
 }
-
-.card {
-
-  background:var(--card);
-
-  border:1px solid var(--line);
-
-  border-radius:20px;
-
-  padding:20px;
-
-  margin-bottom:17px;
-
-  box-shadow:0 8px 25px #0002;
-
+.amount{
+ font-size:32px;
+ font-weight:bold;
+ margin:7px 0;
+ overflow-wrap:anywhere
 }
-
-.balance {
-
-  background:linear-gradient(145deg,#1b3559,#14243c);
-
+.num,input[type=number]{
+ font-family:Arial,Helvetica,sans-serif;
+ font-variant-numeric:lining-nums tabular-nums
 }
-
-.balance-label {color:var(--light)}
-
-.amount {
-
-  font-size:35px;
-
-  font-weight:bold;
-
-  margin:7px 0 16px;
-
-  overflow-wrap:anywhere;
-
+label{
+ display:block;
+ color:var(--light);
+ margin:14px 0 6px
 }
-
-.grid {
-
-  display:grid;
-
-  grid-template-columns:1fr 1fr;
-
-  gap:10px;
-
+input,select{
+ width:100%;
+ min-width:0;
+ background:#0e1b30;
+ color:var(--white);
+ border:1px solid #415674;
+ border-radius:11px;
+ padding:13px;
+ font-size:16px
 }
-
-.stat {
-
-  background:#203653;
-
-  padding:14px;
-
-  border-radius:12px;
-
+input[type=number]{font-size:18px}
+input:focus,select:focus{
+ outline:1px solid #80b4ff
 }
-
-.stat small {
-
-  color:var(--muted);
-
-  display:block;
-
+input::placeholder{color:#8193ae}
+button{
+ border:0;
+ border-radius:11px;
+ padding:13px;
+ font-size:16px;
+ font-weight:600
 }
-
-.stat b {
-
-  display:block;
-
-  font-size:17px;
-
-  margin-top:6px;
-
-  overflow-wrap:anywhere;
-
+.primary{
+ width:100%;
+ background:var(--blue);
+ color:white;
+ margin-top:16px
 }
-
-.positive {color:var(--green)}
-
-.negative {color:var(--red)}
-
-.warning {color:var(--yellow)}
-
-.date-box {
-
-  background:#213b60;
-
-  border:1px solid #3d608d;
-
-  border-radius:12px;
-
-  padding:13px;
-
-  color:#dceaff;
-
-  margin-bottom:15px;
-
+.secondary{
+ background:#263e60;
+ color:#e0edff
 }
-
-label {
-
-  display:block;
-
-  margin:13px 0 6px;
-
-  color:var(--light);
-
-  font-size:14px;
-
+.small{
+ padding:8px 11px;
+ font-size:13px
 }
-
-input,select {
-
-  width:100%;
-
-  background:#0e1b30;
-
-  color:white;
-
-  border:1px solid #415674;
-
-  border-radius:11px;
-
-  padding:13px;
-
-  font-size:16px;
-
-  outline:none;
-
+.tabs{display:flex;gap:8px}
+.tabs button{
+ flex:1;
+ background:#263b58;
+ color:#c6d7ef
 }
-
-input:focus,select:focus {
-
-  border-color:#80b4ff;
-
+.tabs button.active{
+ background:#3879df;
+ color:white
 }
-
-input::placeholder {color:#8193ae}
-
-button {
-
-  border:0;
-
-  border-radius:11px;
-
-  padding:13px;
-
-  font-weight:bold;
-
+.toprow{
+ display:flex;
+ align-items:flex-start;
+ justify-content:space-between;
+ gap:12px
 }
-
-.primary {
-
-  width:100%;
-
-  margin-top:17px;
-
-  background:var(--blue);
-
-  color:white;
-
+.iconbtn{
+ background:#233b5c;
+ color:#cce1ff;
+ font-size:19px;
+ padding:9px 12px
 }
-
-.secondary {
-
-  background:#263e60;
-
-  color:#e0edff;
-
+.datebox{
+ background:#213b60;
+ border:1px solid #3d608d;
+ border-radius:12px;
+ padding:12px;
+ margin-bottom:14px
 }
-
-.tabs {display:flex;gap:9px}
-
-.tabs button {
-
-  flex:1;
-
-  background:#263b58;
-
-  color:#c6d7ef;
-
+.notice{
+ color:var(--muted);
+ font-size:13px;
+ margin-top:11px
 }
-
-.tabs button.active {
-
-  background:#3879df;
-
-  color:white;
-
+.hidden{display:none!important}
+.checkrow{
+ display:flex;
+ align-items:center;
+ gap:9px;
+ margin-top:15px
 }
-
-.progress {
-
-  background:#263b58;
-
-  height:13px;
-
-  border-radius:20px;
-
-  overflow:hidden;
-
-  margin:10px 0;
-
+.checkrow input{width:auto}
+.checkrow label{margin:0}
+.day{
+ color:var(--light);
+ font-weight:bold;
+ margin:19px 0 5px
 }
-
-.progress-fill {
-
-  background:var(--blue);
-
-  height:100%;
-
-  width:0%;
-
-  transition:width .25s;
-
+.item{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:13px 0;
+ border-bottom:1px solid var(--line)
 }
-
-.status {
-
-  display:inline-block;
-
-  background:#24446b;
-
-  color:#d7e8ff;
-
-  padding:7px 12px;
-
-  border-radius:20px;
-
-  font-size:13px;
-
-  font-weight:bold;
-
+.item small{
+ display:block;
+ color:var(--muted);
+ margin-top:4px
 }
-
-.item {
-
-  display:flex;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  padding:14px 0;
-
-  border-bottom:1px solid var(--line);
-
+.right{text-align:right}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.yellow{color:var(--yellow)}
+.textbtn{
+ background:transparent;
+ color:var(--light);
+ font-size:13px;
+ padding:5px
 }
-
-.item:last-child {border-bottom:0}
-
-.item small {
-
-  display:block;
-
-  color:var(--muted);
-
-  margin-top:4px;
-
+.delete{color:var(--red)}
+.empty{
+ text-align:center;
+ color:var(--muted);
+ padding:20px
 }
-
-.item-right {text-align:right}
-
-.delete {
-
-  display:block;
-
-  background:transparent;
-
-  color:var(--red);
-
-  padding:5px 0;
-
-  font-size:12px;
-
-  margin-left:auto;
-
+.actions{display:flex;gap:8px;margin-top:14px}
+.actions button{flex:1}
+.report{
+ background:#10243d;
+ border:1px solid #40638e;
+ border-radius:14px;
+ padding:15px;
+ margin-top:12px
 }
-
-.day-title {
-
-  color:var(--light);
-
-  font-weight:bold;
-
-  margin:20px 0 5px;
-
+.reportrow{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ padding:8px 0;
+ border-bottom:1px solid var(--line)
 }
-
-.bar {
-
-  height:9px;
-
-  background:#263b58;
-
-  border-radius:20px;
-
-  overflow:hidden;
-
-  margin:7px 0 15px;
-
+.reportrow span:last-child{text-align:right}
+.report p{margin:10px 0}
+.report strong{color:var(--light)}
+.bell{
+ background:#234777;
+ color:white;
+ border-radius:50%;
+ width:43px;
+ height:43px;
+ display:grid;
+ place-items:center;
+ font-size:20px
 }
-
-.fill {
-
-  height:100%;
-
-  background:linear-gradient(90deg,#3879df,#82b9ff);
-
+.badge{
+ background:#4388f5;
+ color:white;
+ border-radius:20px;
+ padding:3px 8px;
+ font:12px Arial,sans-serif
 }
-
-.empty {
-
-  color:var(--muted);
-
-  text-align:center;
-
-  padding:18px;
-
+footer{
+ text-align:center;
+ color:var(--muted);
+ padding:18px;
+ font-size:13px
 }
-
-.actions {
-
-  display:flex;
-
-  gap:8px;
-
-  flex-wrap:wrap;
-
-  margin-top:15px;
-
+@media(max-width:370px){
+ h1{font-size:27px}
+ .amount{font-size:28px}
 }
-
-.actions button {flex:1}
-
-.notice {
-
-  font-size:12px;
-
-  color:var(--muted);
-
-  margin-top:12px;
-
-}
-
-.info-row {
-
-  display:flex;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  padding:9px 0;
-
-  border-bottom:1px solid var(--line);
-
-}
-
-.info-row span:last-child {
-
-  text-align:right;
-
-  font-weight:bold;
-
-}
-
-footer {
-
-  text-align:center;
-
-  color:var(--muted);
-
-  font-size:12px;
-
-  padding:15px;
-
-}
-
-@media(max-width:370px) {
-
-  .grid {grid-template-columns:1fr}
-
-  .amount {font-size:29px}
-
-}
-
 </style>
-
 </head>
-
 <body>
 
 <header>
-
-  <div class="header-inner">
-
-    <small>STUDENT MONEY TRACKER</small>
-
-    <h1>Scholar Ledger</h1>
-
-    <p class="muted">
-
-      Less stress, more savings.
-
-    </p>
-
-  </div>
-
+<div class="head">
+<div class="toprow">
+<div>
+<small>STUDENT MONEY TRACKER</small>
+<h1>Scholar Ledger</h1>
+<p class="muted">Less stress, more savings.</p>
+</div>
+<button id="settingsBtn" class="iconbtn hidden"
+aria-label="Pengaturan" title="Pengaturan">⚙</button>
+</div>
+</div>
 </header>
 
 <main class="wrap">
 
+<!-- PENGATURAN AWAL -->
+<section id="setupPage" class="card hidden">
+<h2 id="setupTitle">Selamat Datang!</h2>
+<p class="muted">
+Atur saldo awal dan anggaran bulananmu.
+Kamu hanya perlu melakukan ini sekali.
+</p>
+
+<label for="opening">Saldo Awal (Rp)</label>
+<input id="opening" type="number" min="0"
+step="1" placeholder="Contoh: 8130000">
+
+<p class="notice">
+Saldo awal adalah uang yang kamu miliki saat
+mulai menggunakan Scholar Ledger.
+</p>
+
+<label for="budget">Anggaran Bulanan (Rp)</label>
+<input id="budget" type="number" min="1"
+step="1" placeholder="Contoh: 1500000">
+
+<p class="notice">
+Anggaran adalah batas pengeluaran yang
+ingin kamu tetapkan setiap bulan.
+</p>
+
+<button id="saveSetup" class="primary">
+Simpan & Mulai Mencatat
+</button>
+
+<button id="cancelSetup"
+class="secondary hidden"
+style="width:100%;margin-top:9px">
+Kembali
+</button>
+</section>
+
+<!-- HALAMAN UTAMA -->
+<div id="mainPage" class="hidden">
+
 <section class="card balance">
-
-  <div class="balance-label">
-
-    Total Uang Tersedia
-
-  </div>
-
-  <div class="amount" id="balance">Rp0</div>
-
-  <div class="grid">
-
-    <div class="stat">
-
-      <small>Total pemasukan tercatat</small>
-
-      <b class="positive" id="income">Rp0</b>
-
-    </div>
-
-    <div class="stat">
-
-      <small>Total pengeluaran tercatat</small>
-
-      <b class="negative" id="expense">Rp0</b>
-
-    </div>
-
-  </div>
-
-  <p class="notice">
-
-    Saldo = saldo awal + pemasukan - pengeluaran.
-
-  </p>
-
+<div style="color:var(--light)">
+Saldo Tersedia
+</div>
+<div class="amount num" id="balance">Rp0</div>
+<p class="notice">
+Saldo awal + pemasukan − pengeluaran
+</p>
 </section>
 
+<!-- NOTIFIKASI LAPORAN -->
+<section id="notification" class="card hidden">
+<div class="toprow">
+<div>
+<h2>🔔 Evaluasi Bulanan</h2>
+<p class="muted">
+Laporan keuanganmu sudah siap.
+</p>
+</div>
+<span class="badge">Baru</span>
+</div>
+
+<div id="notificationContent"></div>
+
+<button id="readReport" class="primary">
+Tandai Sudah Dibaca
+</button>
+</section>
+
+<!-- CATAT TRANSAKSI -->
 <section class="card">
+<h2>Catat Transaksi</h2>
 
-  <h2>Pengaturan Keuangan</h2>
+<div class="datebox">
+<div id="todayLabel">Memuat tanggal...</div>
+<small class="muted">
+Tanggal otomatis mengikuti perangkat
+</small>
+</div>
 
-  <p class="muted">
+<div class="tabs">
+<button id="outBtn" type="button" class="active">
+Pengeluaran
+</button>
+<button id="inBtn" type="button">
+Pemasukan
+</button>
+</div>
 
-    Atur saldo awal dan batas pengeluaranmu.
+<form id="form">
+<label for="nominal">Nominal (Rp)</label>
+<input id="nominal" type="number" min="1"
+step="1" required placeholder="Contoh: 20000">
 
-  </p>
+<label for="note">Keterangan</label>
+<input id="note" maxlength="120" required
+placeholder="Contoh: Makan siang">
 
-  <label>Saldo Awal (Rp)</label>
+<label for="category">Kategori</label>
+<select id="category"></select>
 
-  <input
+<div class="checkrow">
+<input id="manualDate" type="checkbox">
+<label for="manualDate">
+Catat transaksi tanggal sebelumnya
+</label>
+</div>
 
-    type="number"
+<div id="manualBox" class="hidden">
+<label for="date">Tanggal Transaksi</label>
+<input id="date" type="date">
+</div>
 
-    id="openingBalance"
+<button id="submitBtn" type="submit" class="primary">
++ Simpan Transaksi
+</button>
 
-    min="0"
-
-    step="1"
-
-    placeholder="Contoh: 1000000"
-
-  >
-
-  <button
-
-    class="primary"
-
-    onclick="saveOpeningBalance()">
-
-    Simpan Saldo Awal
-
-  </button>
-
-  <p class="notice">
-
-    Saldo awal adalah uang yang sudah kamu
-
-    miliki sebelum transaksi pertama dicatat.
-
-    Jangan memasukkan uang yang sama dua kali.
-
-  </p>
-
-  <label>Anggaran Bulanan (Rp)</label>
-
-  <input
-
-    type="number"
-
-    id="budget"
-
-    min="0"
-
-    step="1"
-
-    placeholder="Contoh: 1500000"
-
-  >
-
-  <button
-
-    class="primary"
-
-    onclick="saveBudget()">
-
-    Simpan Anggaran Bulan Terpilih
-
-  </button>
-
-  <p class="notice">
-
-    Setiap bulan dapat memiliki anggaran
-
-    yang berbeda.
-
-  </p>
-
+<button id="cancelEdit" type="button"
+class="secondary hidden"
+style="width:100%;margin-top:9px">
+Batal Mengedit
+</button>
+</form>
 </section>
 
+<!-- RIWAYAT -->
 <section class="card">
-
-  <h2>Evaluasi Keuangan Bulanan</h2>
-
-  <label>Pilih bulan</label>
-
-  <input type="month" id="month">
-
-  <div class="grid" style="margin-top:15px">
-
-    <div class="stat">
-
-      <small>Pemasukan bulan ini</small>
-
-      <b class="positive" id="monthIn">Rp0</b>
-
-    </div>
-
-    <div class="stat">
-
-      <small>Pengeluaran bulan ini</small>
-
-      <b class="negative" id="monthOut">Rp0</b>
-
-    </div>
-
-  </div>
-
-  <div class="info-row" style="margin-top:15px">
-
-    <span>Anggaran bulanan</span>
-
-    <span id="budgetDisplay">Rp0</span>
-
-  </div>
-
-  <div class="info-row">
-
-    <span>Sisa anggaran</span>
-
-    <span id="remainingBudget">Rp0</span>
-
-  </div>
-
-  <div class="info-row">
-
-    <span>Anggaran terpakai</span>
-
-    <span id="usedPercent">0%</span>
-
-  </div>
-
-  <div class="progress">
-
-    <div class="progress-fill" id="progressFill"></div>
-
-  </div>
-
-  <div style="margin-top:15px">
-
-    <span class="status" id="status">
-
-      Belum ada anggaran
-
-    </span>
-
-  </div>
-
-  <p class="notice" id="statusAdvice">
-
-    Masukkan anggaran bulanan untuk
-
-    mendapatkan evaluasi.
-
-  </p>
-
-  <div class="info-row">
-
-    <span>Sisa hari bulan ini</span>
-
-    <span id="daysRemaining">-</span>
-
-  </div>
-
-  <div class="info-row">
-
-    <span>Batas rata-rata pengeluaran harian</span>
-
-    <span id="dailyAllowance">-</span>
-
-  </div>
-
-  <h3>Pengeluaran Berdasarkan Kategori</h3>
-
-  <div id="breakdown"></div>
-
+<h2>Riwayat Transaksi</h2>
+<p class="muted">
+Semua catatanmu tersimpan berdasarkan tanggal.
+</p>
+<div id="history"></div>
 </section>
 
+<!-- BACKUP -->
 <section class="card">
+<h2>Cadangan Data</h2>
+<p class="muted">
+Simpan backup untuk melindungi transaksi
+jika data browser terhapus.
+</p>
+<div class="actions">
+<button id="exportCSV" class="secondary">
+Ekspor CSV
+</button>
+<button id="backup" class="secondary">
+Backup JSON
+</button>
+</div>
 
-  <h2>Catat Transaksi</h2>
+<label for="restoreFile">Pulihkan Backup JSON</label>
+<input id="restoreFile" type="file"
+accept=".json,application/json">
 
-  <div class="date-box">
-
-    <div id="todayLabel">
-
-      Memuat tanggal...
-
-    </div>
-
-    <small class="muted">
-
-      Tanggal otomatis mengikuti perangkat
-
-    </small>
-
-  </div>
-
-  <div class="tabs">
-
-    <button
-
-      id="outBtn"
-
-      class="active"
-
-      onclick="setType('out')">
-
-      Pengeluaran
-
-    </button>
-
-    <button
-
-      id="inBtn"
-
-      onclick="setType('in')">
-
-      Pemasukan
-
-    </button>
-
-  </div>
-
-  <form id="form">
-
-    <label>Nominal (Rp)</label>
-
-    <input
-
-      id="nominal"
-
-      type="number"
-
-      min="1"
-
-      step="1"
-
-      placeholder="Contoh: 20000"
-
-      required
-
-    >
-
-    <label>Keterangan</label>
-
-    <input
-
-      id="note"
-
-      maxlength="120"
-
-      placeholder="Contoh: Makan siang"
-
-      required
-
-    >
-
-    <label>Kategori</label>
-
-    <select id="category"></select>
-
-    <button class="primary" type="submit">
-
-      + Simpan Transaksi
-
-    </button>
-
-  </form>
-
-  <p class="notice">
-
-    Transaksi otomatis tercatat sesuai
-
-    tanggal saat tombol simpan ditekan.
-
-  </p>
-
+<button id="restore" class="primary">
+Pulihkan Data
+</button>
 </section>
 
-<section class="card">
-
-  <h2>Riwayat Transaksi Harian</h2>
-
-  <p class="muted">
-
-    Semua transaksi diurutkan berdasarkan tanggal.
-
-  </p>
-
-  <div id="history"></div>
-
-</section>
-
-<section class="card">
-
-  <h2>Backup dan Pemulihan Data</h2>
-
-  <p class="muted">
-
-    Simpan cadangan agar catatan keuanganmu
-
-    tidak hilang saat mengganti perangkat
-
-    atau menghapus data browser.
-
-  </p>
-
-  <div class="actions">
-
-    <button
-
-      class="secondary"
-
-      onclick="exportCSV()">
-
-      Ekspor CSV
-
-    </button>
-
-    <button
-
-      class="secondary"
-
-      onclick="exportJSON()">
-
-      Backup JSON
-
-    </button>
-
-  </div>
-
-  <label>Pulihkan dari backup JSON</label>
-
-  <input
-
-    type="file"
-
-    id="restoreFile"
-
-    accept=".json,application/json"
-
-  >
-
-  <button
-
-    class="primary"
-
-    onclick="restoreJSON()">
-
-    Pulihkan Data
-
-  </button>
-
-  <p class="notice">
-
-    Pemulihan menggantikan data yang
-
-    tersimpan saat ini. Buat backup dahulu.
-
-  </p>
-
-</section>
-
+</div>
 </main>
 
 <footer>
-
-  Scholar Ledger 3.0
-
-  <br>
-
-  Less stress, more savings.
-
+Scholar Ledger 4.0<br>
+Less stress, more savings.
 </footer>
 
 <script>
-
 "use strict";
 
 const KEY="student-money-tracker-v1";
-
-const SETTINGS_KEY="scholar-ledger-settings-v3";
-
-const outCats=[
-
-  "Makan & Minum",
-
-  "Jajan",
-
-  "Nongkrong",
-
-  "Transportasi",
-
-  "Kebutuhan Kuliah",
-
-  "Tagihan",
-
-  "Laundry",
-
-  "Kesehatan",
-
-  "Belanja",
-
-  "Tabungan",
-
-  "Investasi",
-
-  "Lainnya"
-
-];
-
-const inCats=[
-
-  "Uang Bulanan",
-
-  "Bantuan Keluarga",
-
-  "Penghasilan",
-
-  "Hadiah",
-
-  "Lainnya"
-
-];
+const SETTINGS="scholar-ledger-settings-v3";
+const META="scholar-ledger-meta-v4";
 
 const $=id=>document.getElementById(id);
 
-const rupiah=n=>new Intl.NumberFormat(
+const outCats=[
+"Makan & Minum","Jajan","Nongkrong",
+"Transportasi","Kebutuhan Kuliah",
+"Tagihan","Laundry","Kesehatan",
+"Belanja","Tabungan","Investasi","Lainnya"
+];
 
-  "id-ID",{
+const inCats=[
+"Uang Bulanan","Bantuan Keluarga",
+"Penghasilan","Hadiah","Lainnya"
+];
 
-    style:"currency",
+const rupiah=n=>new Intl.NumberFormat("id-ID",{
+style:"currency",
+currency:"IDR",
+maximumFractionDigits:0
+}).format(n);
 
-    currency:"IDR",
-
-    maximumFractionDigits:0
-
-  }
-
-).format(n);
-
-function localDate(){
-
-  const d=new Date();
-
-  const y=d.getFullYear();
-
-  const m=String(d.getMonth()+1).padStart(2,"0");
-
-  const day=String(d.getDate()).padStart(2,"0");
-
-  return `${y}-${m}-${day}`;
-
+function today(){
+const d=new Date();
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0")+"-"+
+String(d.getDate()).padStart(2,"0");
 }
 
-function fullDate(value){
-
-  const [y,m,d]=value.split("-").map(Number);
-
-  return new Intl.DateTimeFormat("id-ID",{
-
-    weekday:"long",
-
-    day:"numeric",
-
-    month:"long",
-
-    year:"numeric"
-
-  }).format(new Date(y,m-1,d));
-
+function formatDate(s){
+const [y,m,d]=s.split("-").map(Number);
+return new Intl.DateTimeFormat("id-ID",{
+weekday:"long",day:"numeric",
+month:"long",year:"numeric"
+}).format(new Date(y,m-1,d));
 }
 
-function validMoney(value){
-
-  return Number.isSafeInteger(value)&&value>=0;
-
+function moneyOK(n){
+return Number.isSafeInteger(n)&&n>=0;
 }
 
-function validTransaction(t){
-
-  return t &&
-
-    (t.type==="in"||t.type==="out") &&
-
-    validMoney(t.amount) &&
-
-    t.amount>0 &&
-
-    typeof t.date==="string" &&
-
-    /^\d{4}-\d{2}-\d{2}$/.test(t.date) &&
-
-    typeof t.note==="string" &&
-
-    typeof t.category==="string";
-
+function dateOK(s){
+if(typeof s!=="string"||
+!/^\d{4}-\d{2}-\d{2}$/.test(s))return false;
+const [y,m,d]=s.split("-").map(Number);
+const dt=new Date(y,m-1,d);
+return dt.getFullYear()===y&&
+dt.getMonth()===m-1&&dt.getDate()===d;
 }
 
-function loadTransactions(){
-
-  try{
-
-    const value=JSON.parse(
-
-      localStorage.getItem(KEY)||"[]"
-
-    );
-
-    return Array.isArray(value)
-
-      ?value.filter(validTransaction)
-
-      :[];
-
-  }catch(e){
-
-    return [];
-
-  }
-
+function transactionOK(t){
+return t&&
+(t.type==="in"||t.type==="out")&&
+moneyOK(t.amount)&&t.amount>0&&
+dateOK(t.date)&&
+typeof t.note==="string"&&
+typeof t.category==="string";
 }
 
-function loadSettings(){
-
-  try{
-
-    const value=JSON.parse(
-
-      localStorage.getItem(SETTINGS_KEY)||"{}"
-
-    );
-
-    return {
-
-      openingBalance:validMoney(value.openingBalance)
-
-        ?value.openingBalance:0,
-
-      budgets:value.budgets &&
-
-        typeof value.budgets==="object" &&
-
-        !Array.isArray(value.budgets)
-
-        ?value.budgets:{}
-
-    };
-
-  }catch(e){
-
-    return {openingBalance:0,budgets:{}};
-
-  }
-
+function read(key,fallback){
+try{
+const raw=localStorage.getItem(key);
+return raw===null?fallback:JSON.parse(raw);
+}catch(e){return fallback}
 }
 
-let transactions=loadTransactions();
+let transactions=read(KEY,[]);
+if(!Array.isArray(transactions))transactions=[];
+transactions=transactions.filter(transactionOK)
+.map((t,i)=>({...t,id:t.id||"old-"+i}));
 
-let settings=loadSettings();
+let settings=read(SETTINGS,{});
+settings={
+openingBalance:moneyOK(settings.openingBalance)
+?settings.openingBalance:0,
+budgets:settings.budgets&&
+typeof settings.budgets==="object"&&
+!Array.isArray(settings.budgets)
+?settings.budgets:{}
+};
+
+let meta=read(META,{});
+meta={
+initialized:meta.initialized===true,
+startMonth:typeof meta.startMonth==="string"
+?meta.startMonth:today().slice(0,7),
+readReports:Array.isArray(meta.readReports)
+?meta.readReports:[]
+};
 
 let type="out";
+let editingId=null;
 
-$("month").value=localDate().slice(0,7);
-
-$("openingBalance").value=settings.openingBalance;
-
-function updateToday(){
-
-  $("todayLabel").textContent=
-
-    "📅 "+fullDate(localDate());
-
+function store(key,value){
+localStorage.setItem(key,JSON.stringify(value));
 }
 
-function selectedMonth(){
-
-  return $("month").value||localDate().slice(0,7);
-
+function currentMonth(){
+return today().slice(0,7);
 }
 
-function setType(value){
-
-  type=value;
-
-  $("outBtn").classList.toggle(
-
-    "active",type==="out"
-
-  );
-
-  $("inBtn").classList.toggle(
-
-    "active",type==="in"
-
-  );
-
-  const categories=type==="out"
-
-    ?outCats:inCats;
-
-  $("category").replaceChildren(
-
-    ...categories.map(c=>new Option(c,c))
-
-  );
-
+function previousMonth(month){
+const [y,m]=month.split("-").map(Number);
+const d=new Date(y,m-2,1);
+return d.getFullYear()+"-"+
+String(d.getMonth()+1).padStart(2,"0");
 }
 
-function persistSettings(updated){
-
-  try{
-
-    localStorage.setItem(
-
-      SETTINGS_KEY,JSON.stringify(updated)
-
-    );
-
-    settings=updated;
-
-    render();
-
-    return true;
-
-  }catch(e){
-
-    alert("Gagal menyimpan pengaturan.");
-
-    return false;
-
-  }
-
+function monthName(month){
+const [y,m]=month.split("-").map(Number);
+return new Intl.DateTimeFormat("id-ID",{
+month:"long",year:"numeric"
+}).format(new Date(y,m-1,1));
 }
 
-function saveOpeningBalance(){
+function budgetFor(month){
+const explicit=settings.budgets[month];
+if(moneyOK(explicit)&&explicit>0)return explicit;
 
-  const amount=Number($("openingBalance").value);
+// Gunakan anggaran terakhir yang telah ditentukan.
+const keys=Object.keys(settings.budgets)
+.filter(k=>k<=month&&
+moneyOK(settings.budgets[k])&&
+settings.budgets[k]>0)
+.sort();
 
-  if(!validMoney(amount)){
-
-    alert("Saldo awal harus berupa angka positif atau nol.");
-
-    return;
-
-  }
-
-  const updated={
-
-    ...settings,
-
-    openingBalance:amount
-
-  };
-
-  if(persistSettings(updated)){
-
-    alert("Saldo awal berhasil disimpan.");
-
-  }
-
+return keys.length
+?settings.budgets[keys[keys.length-1]]
+:0;
 }
 
-function saveBudget(){
-
-  const amount=Number($("budget").value);
-
-  if(!validMoney(amount)){
-
-    alert("Masukkan anggaran yang valid.");
-
-    return;
-
-  }
-
-  const month=selectedMonth();
-
-  const updated={
-
-    ...settings,
-
-    budgets:{
-
-      ...settings.budgets,
-
-      [month]:amount
-
-    }
-
-  };
-
-  if(persistSettings(updated)){
-
-    alert("Anggaran bulanan berhasil disimpan.");
-
-  }
-
+function refreshToday(){
+$("todayLabel").textContent="📅 "+formatDate(today());
 }
 
-function updateBudgetInput(){
-
-  const amount=settings.budgets[selectedMonth()];
-
-  $("budget").value=validMoney(amount)?amount:"";
-
+function setType(t){
+type=t;
+$("outBtn").classList.toggle("active",t==="out");
+$("inBtn").classList.toggle("active",t==="in");
+const cats=t==="out"?outCats:inCats;
+$("category").replaceChildren(
+...cats.map(c=>new Option(c,c))
+);
 }
 
-function saveTransactions(updated){
+$("outBtn").onclick=()=>setType("out");
+$("inBtn").onclick=()=>setType("in");
 
-  try{
-
-    localStorage.setItem(
-
-      KEY,JSON.stringify(updated)
-
-    );
-
-    transactions=updated;
-
-    render();
-
-    return true;
-
-  }catch(e){
-
-    alert("Gagal menyimpan data di browser.");
-
-    return false;
-
-  }
-
+function showSetup(edit=false){
+$("setupPage").classList.remove("hidden");
+$("mainPage").classList.add("hidden");
+$("settingsBtn").classList.add("hidden");
+$("setupTitle").textContent=edit
+?"Pengaturan Keuangan":"Selamat Datang!";
+$("opening").value=settings.openingBalance;
+$("budget").value=budgetFor(currentMonth())||"";
+$("cancelSetup").classList.toggle("hidden",!edit);
+$("saveSetup").textContent=edit
+?"Simpan Perubahan":"Simpan & Mulai Mencatat";
 }
 
-$("form").addEventListener("submit",event=>{
-
-  event.preventDefault();
-
-  const amount=Number($("nominal").value);
-
-  const note=$("note").value.trim();
-
-  if(!validMoney(amount)||amount===0){
-
-    alert("Masukkan nominal yang valid.");
-
-    return;
-
-  }
-
-  if(!note){
-
-    alert("Isi keterangan transaksi.");
-
-    return;
-
-  }
-
-  const t={
-
-    id:typeof crypto!=="undefined" &&
-
-      typeof crypto.randomUUID==="function"
-
-      ?crypto.randomUUID()
-
-      :String(Date.now())+"-"+Math.random(),
-
-    type,
-
-    amount,
-
-    note,
-
-    category:$("category").value,
-
-    date:localDate(),
-
-    createdAt:new Date().toISOString()
-
-  };
-
-  if(saveTransactions([...transactions,t])){
-
-    $("nominal").value="";
-
-    $("note").value="";
-
-    updateToday();
-
-    alert("Transaksi berhasil disimpan!");
-
-  }
-
-});
-
-$("month").addEventListener("change",()=>{
-
-  updateBudgetInput();
-
-  render();
-
-});
-
-function el(tag,content,className){
-
-  const node=document.createElement(tag);
-
-  if(content!==undefined){
-
-    node.textContent=content;
-
-  }
-
-  if(className)node.className=className;
-
-  return node;
-
+function showMain(){
+$("setupPage").classList.add("hidden");
+$("mainPage").classList.remove("hidden");
+$("settingsBtn").classList.remove("hidden");
+refreshToday();
+render();
 }
 
-function sumType(list,type){
+$("settingsBtn").onclick=()=>showSetup(true);
+$("cancelSetup").onclick=showMain;
 
-  return list.filter(t=>t.type===type)
+$("saveSetup").onclick=()=>{
+const openingRaw=$("opening").value;
+const budgetRaw=$("budget").value;
+const opening=Number(openingRaw);
+const budget=Number(budgetRaw);
 
-    .reduce((sum,t)=>sum+t.amount,0);
-
+if(openingRaw===""||budgetRaw===""||
+!moneyOK(opening)||!moneyOK(budget)||budget===0){
+alert("Isi saldo awal dan anggaran dengan benar.");
+return;
 }
 
-function monthDays(month){
+const nextSettings={
+openingBalance:opening,
+budgets:{
+...settings.budgets,
+[currentMonth()]:budget
+}
+};
 
-  const [year,m]=month.split("-").map(Number);
+const nextMeta={
+...meta,
+initialized:true,
+startMonth:meta.initialized
+?meta.startMonth:currentMonth()
+};
 
-  return new Date(year,m,0).getDate();
+try{
+store(SETTINGS,nextSettings);
+store(META,nextMeta);
+settings=nextSettings;
+meta=nextMeta;
+showMain();
+}catch(e){
+alert("Pengaturan gagal disimpan.");
+}
+};
 
+function saveTransactions(next){
+try{
+store(KEY,next);
+transactions=next;
+render();
+return true;
+}catch(e){
+alert("Transaksi gagal disimpan.");
+return false;
+}
 }
 
-function remainingDays(month){
+$("manualDate").onchange=()=>{
+$("manualBox").classList.toggle(
+"hidden",!$("manualDate").checked
+);
+if($("manualDate").checked){
+$("date").value=today();
+$("date").max=today();
+}
+};
 
-  const current=localDate();
+function resetForm(){
+$("form").reset();
+editingId=null;
+setType("out");
+$("manualBox").classList.add("hidden");
+$("submitBtn").textContent="+ Simpan Transaksi";
+$("cancelEdit").classList.add("hidden");
+}
 
-  const currentMonth=current.slice(0,7);
+$("cancelEdit").onclick=resetForm;
 
-  if(month<currentMonth)return 0;
+$("form").onsubmit=e=>{
+e.preventDefault();
 
-  if(month>currentMonth){
+const amount=Number($("nominal").value);
+const note=$("note").value.trim();
+const date=$("manualDate").checked
+?$("date").value:today();
 
-    return monthDays(month);
+if(!moneyOK(amount)||amount===0||
+!note||!dateOK(date)||date>today()){
+alert("Periksa nominal, keterangan, dan tanggal.");
+return;
+}
 
-  }
+const old=transactions.find(t=>t.id===editingId);
+const id=editingId||(
+typeof crypto!=="undefined"&&crypto.randomUUID
+?crypto.randomUUID()
+:String(Date.now())+Math.random()
+);
 
-  return monthDays(month)-
+const entry={
+id,type,amount,note,
+category:$("category").value,
+date,
+createdAt:old?.createdAt||new Date().toISOString()
+};
 
-    Number(current.slice(8))+1;
+const next=editingId
+?transactions.map(t=>t.id===editingId?entry:t)
+:[...transactions,entry];
 
+if(saveTransactions(next)){
+resetForm();
+alert("Transaksi berhasil disimpan!");
+}
+};
+
+function sum(list,t){
+return list.filter(x=>x.type===t)
+.reduce((s,x)=>s+x.amount,0);
+}
+
+function node(tag,text,cls){
+const n=document.createElement(tag);
+if(text!==undefined)n.textContent=text;
+if(cls)n.className=cls;
+return n;
 }
 
 function render(){
-
-  const totalIn=sumType(transactions,"in");
-
-  const totalOut=sumType(transactions,"out");
-
-  const balance=settings.openingBalance+
-
-    totalIn-totalOut;
-
-  $("balance").textContent=rupiah(balance);
-
-  $("income").textContent=rupiah(totalIn);
-
-  $("expense").textContent=rupiah(totalOut);
-
-  const month=selectedMonth();
-
-  const monthly=transactions.filter(t=>
-
-    t.date.startsWith(month)
-
-  );
-
-  const monthIn=sumType(monthly,"in");
-
-  const monthOut=sumType(monthly,"out");
-
-  $("monthIn").textContent=rupiah(monthIn);
-
-  $("monthOut").textContent=rupiah(monthOut);
-
-  const budget=settings.budgets[month];
-
-  const hasBudget=validMoney(budget)&&budget>0;
-
-  $("budgetDisplay").textContent=
-
-    hasBudget?rupiah(budget):"Belum diatur";
-
-  const remaining=hasBudget
-
-    ?budget-monthOut:0;
-
-  $("remainingBudget").textContent=
-
-    hasBudget?rupiah(remaining):"-";
-
-  const percentage=hasBudget
-
-    ?monthOut/budget*100:0;
-
-  $("usedPercent").textContent=
-
-    hasBudget?percentage.toFixed(1)+"%":"-";
-
-  const progress=$("progressFill");
-
-  progress.style.width=
-
-    Math.min(percentage,100)+"%";
-
-  const status=$("status");
-
-  const advice=$("statusAdvice");
-
-  if(!hasBudget){
-
-    status.textContent="Belum ada anggaran";
-
-    status.style.color="var(--light)";
-
-    advice.textContent=
-
-      "Atur anggaran bulanan untuk memulai evaluasi.";
-
-  }else if(percentage>100){
-
-    status.textContent="Melebihi Anggaran";
-
-    status.style.color="var(--red)";
-
-    advice.textContent=
-
-      "Pengeluaran sudah melampaui anggaran. "+
-
-      "Tinjau kembali pengeluaran yang tidak mendesak.";
-
-  }else if(percentage>=80){
-
-    status.textContent="Perlu Perhatian";
-
-    status.style.color="var(--yellow)";
-
-    advice.textContent=
-
-      "Pengeluaran mendekati batas anggaran. "+
-
-      "Prioritaskan kebutuhan utama.";
-
-  }else{
-
-    status.textContent="Terkendali";
-
-    status.style.color="var(--green)";
-
-    advice.textContent=
-
-      "Pengeluaran masih berada di bawah "+
-
-      "80% dari anggaran bulanan.";
-
-  }
-
-  const days=remainingDays(month);
-
-  $("daysRemaining").textContent=
-
-    days+" hari";
-
-  $("dailyAllowance").textContent=
-
-    hasBudget&&days>0
-
-    ?rupiah(Math.max(remaining,0)/days)
-
-    :"-";
-
-  renderBreakdown(monthly,monthOut);
-
-  renderHistory();
-
-}
-
-function renderBreakdown(monthly,total){
-
-  const groups={};
-
-  monthly.filter(t=>t.type==="out")
-
-    .forEach(t=>{
-
-      groups[t.category]=
-
-        (groups[t.category]||0)+t.amount;
-
-    });
-
-  const box=$("breakdown");
-
-  box.replaceChildren();
-
-  const sorted=Object.entries(groups)
-
-    .sort((a,b)=>b[1]-a[1]);
-
-  sorted.forEach(([name,value])=>{
-
-    const title=el(
-
-      "div",name+" — "+rupiah(value)
-
-    );
-
-    const bar=el("div",undefined,"bar");
-
-    const fill=el("div",undefined,"fill");
-
-    fill.style.width=
-
-      (total?value/total*100:0)+"%";
-
-    bar.append(fill);
-
-    box.append(title,bar);
-
-  });
-
-  if(!sorted.length){
-
-    box.append(el(
-
-      "p",
-
-      "Belum ada pengeluaran bulan ini.",
-
-      "empty"
-
-    ));
-
-  }
-
+const totalIn=sum(transactions,"in");
+const totalOut=sum(transactions,"out");
+
+$("balance").textContent=rupiah(
+settings.openingBalance+totalIn-totalOut
+);
+
+renderHistory();
+renderNotification();
 }
 
 function renderHistory(){
+const box=$("history");
+box.replaceChildren();
 
-  const history=$("history");
+const sorted=[...transactions].sort((a,b)=>{
+const d=b.date.localeCompare(a.date);
+return d||String(b.createdAt||"")
+.localeCompare(String(a.createdAt||""));
+});
 
-  history.replaceChildren();
+let lastDate="";
 
-  const sorted=[...transactions].sort((a,b)=>{
+sorted.forEach(t=>{
+if(t.date!==lastDate){
+lastDate=t.date;
+box.append(node("div",formatDate(t.date),"day"));
+}
 
-    const dateDiff=b.date.localeCompare(a.date);
+const item=node("div",undefined,"item");
+const left=node("div");
+const right=node("div",undefined,"right");
 
-    if(dateDiff)return dateDiff;
+left.append(
+node("b",t.note),
+node("small",t.category)
+);
 
-    return (b.createdAt||"")
+right.append(node(
+"b",
+(t.type==="out"?"−":"+")+rupiah(t.amount),
+t.type==="out"?"red num":"green num"
+));
 
-      .localeCompare(a.createdAt||"");
+const edit=node("button","Edit","textbtn");
+edit.onclick=()=>editTransaction(t.id);
 
-  });
+const del=node("button","Hapus","textbtn delete");
+del.onclick=()=>{
+if(!confirm("Hapus transaksi ini?"))return;
+saveTransactions(
+transactions.filter(x=>x.id!==t.id)
+);
+};
 
-  let previousDate="";
+right.append(edit,del);
+item.append(left,right);
+box.append(item);
+});
 
-  sorted.forEach(t=>{
+if(!sorted.length){
+box.append(node(
+"p","Belum ada transaksi.","empty"
+));
+}
+}
 
-    if(t.date!==previousDate){
+function editTransaction(id){
+const t=transactions.find(x=>x.id===id);
+if(!t)return;
 
-      previousDate=t.date;
+editingId=t.id;
+setType(t.type);
+$("nominal").value=t.amount;
+$("note").value=t.note;
 
-      history.append(
+if(![...$("category").options]
+.some(o=>o.value===t.category)){
+$("category").add(new Option(t.category,t.category));
+}
+$("category").value=t.category;
 
-        el("div",fullDate(t.date),"day-title")
+$("manualDate").checked=true;
+$("manualBox").classList.remove("hidden");
+$("date").value=t.date;
+$("date").max=today();
 
-      );
+$("submitBtn").textContent="Simpan Perubahan";
+$("cancelEdit").classList.remove("hidden");
+$("form").scrollIntoView({behavior:"smooth"});
+}
 
-    }
+function reportFor(month){
+const list=transactions.filter(t=>
+t.date.startsWith(month)
+);
 
-    const item=el("div",undefined,"item");
+const income=sum(list,"in");
+const expense=sum(list,"out");
+const budget=budgetFor(month);
+const remaining=budget-expense;
 
-    const left=el("div");
+const groups={};
+const counts={};
 
-    const right=el("div",undefined,"item-right");
+list.filter(t=>t.type==="out").forEach(t=>{
+groups[t.category]=(groups[t.category]||0)+t.amount;
+counts[t.category]=(counts[t.category]||0)+1;
+});
 
-    left.append(
+const ranked=Object.entries(groups)
+.sort((a,b)=>b[1]-a[1]);
 
-      el("b",t.note),
+const frequent=Object.entries(counts)
+.sort((a,b)=>b[1]-a[1]);
 
-      el("small",t.category)
+const biggest=list.filter(t=>t.type==="out")
+.sort((a,b)=>b.amount-a.amount)[0];
 
-    );
+let status="Belum ada anggaran";
+if(budget>0){
+const ratio=expense/budget;
+status=ratio>1?"Melebihi anggaran":
+ratio>=.8?"Perlu perhatian":"Terkendali";
+}
 
-    const amount=el(
+return{
+month,income,expense,budget,remaining,
+ranked,frequent,biggest,status
+};
+}
 
-      "b",
+function reportElement(report){
+const box=node("div",undefined,"report");
+box.append(node("h3",monthName(report.month)));
 
-      (t.type==="out"?"−":"+")+
+function addRow(label,value){
+const row=node("div",undefined,"reportrow");
+row.append(node("span",label),node("span",value,"num"));
+box.append(row);
+}
 
-        rupiah(t.amount),
+addRow("Pemasukan",rupiah(report.income));
+addRow("Pengeluaran",rupiah(report.expense));
+addRow("Anggaran",report.budget
+?rupiah(report.budget):"Belum diatur");
+addRow("Sisa anggaran",report.budget
+?rupiah(report.remaining):"-");
+addRow("Status",report.status);
 
-      t.type==="out"?"negative":"positive"
+box.append(node("h3","Rincian Pengeluaran"));
 
-    );
+if(report.ranked.length){
+report.ranked.forEach(([name,value])=>{
+const pct=report.expense
+?(value/report.expense*100).toFixed(1):"0";
+addRow(name,rupiah(value)+" ("+pct+"%)");
+});
+}else{
+box.append(node("p","Tidak ada pengeluaran tercatat."));
+}
 
-    const del=el(
+box.append(node("h3","Kesimpulan Bulanan"));
 
-      "button","Hapus","delete"
+if(!report.ranked.length){
+box.append(node("p",
+"Belum ada pengeluaran yang dapat dianalisis."));
+return box;
+}
 
-    );
+const [topName,topValue]=report.ranked[0];
+const topPct=(topValue/report.expense*100).toFixed(1);
+const [freqName,freqCount]=report.frequent[0];
 
-    del.onclick=()=>{
+let conclusion=
+"Pengeluaran terbesar berasal dari kategori "+
+topName+" sebesar "+rupiah(topValue)+
+" ("+topPct+"% dari total pengeluaran). ";
 
-      if(!confirm("Hapus transaksi ini?"))return;
+conclusion+=
+"Kategori yang paling sering dicatat adalah "+
+freqName+" dengan "+freqCount+" transaksi. ";
 
-      const updated=transactions.filter(
+if(report.biggest){
+conclusion+=
+"Transaksi terbesar adalah "+
+report.biggest.note+" sebesar "+
+rupiah(report.biggest.amount)+
+" pada "+formatDate(report.biggest.date)+". ";
+}
 
-        x=>x.id!==t.id
+if(report.budget>0){
+if(report.remaining<0){
+conclusion+=
+"Pengeluaran melampaui anggaran sebesar "+
+rupiah(Math.abs(report.remaining))+". ";
+}else{
+conclusion+=
+"Sisa anggaran bulan ini "+rupiah(report.remaining)+". ";
+}
+}
 
-      );
+conclusion+=
+"Tinjau kategori pengeluaran terbesar dan "+
+"transaksi yang paling sering terjadi untuk "+
+"menentukan penghematan bulan berikutnya.";
 
-      saveTransactions(updated);
+box.append(node("p",conclusion));
+return box;
+}
 
-    };
+function pendingMonths(){
+const months=new Set();
+let m=meta.startMonth;
+const current=currentMonth();
 
-    right.append(amount,del);
+// Maksimal 120 bulan untuk mencegah perulangan
+// berlebihan akibat data pengaturan yang rusak.
+for(let i=0;i<120&&m<current;i++){
+if(!meta.readReports.includes(m))months.add(m);
+const [y,n]=m.split("-").map(Number);
+const next=new Date(y,n,1);
+m=next.getFullYear()+"-"+
+String(next.getMonth()+1).padStart(2,"0");
+}
+return [...months].sort();
+}
 
-    item.append(left,right);
+function renderNotification(){
+const pending=pendingMonths();
+const section=$("notification");
+const content=$("notificationContent");
 
-    history.append(item);
+section.classList.toggle("hidden",!pending.length);
+content.replaceChildren();
 
-  });
+if(!pending.length)return;
 
-  if(!sorted.length){
+pending.forEach(m=>{
+content.append(reportElement(reportFor(m)));
+});
 
-    history.append(el(
-
-      "p","Belum ada transaksi.","empty"
-
-    ));
-
-  }
-
+$("readReport").onclick=()=>{
+try{
+const next={
+...meta,
+readReports:[
+...new Set([...meta.readReports,...pending])
+]
+};
+store(META,next);
+meta=next;
+renderNotification();
+}catch(e){
+alert("Gagal menyimpan status laporan.");
+}
+};
 }
 
 function download(content,name,mime){
-
-  const blob=new Blob([content],{type:mime});
-
-  const url=URL.createObjectURL(blob);
-
-  const a=document.createElement("a");
-
-  a.href=url;
-
-  a.download=name;
-
-  document.body.append(a);
-
-  a.click();
-
-  a.remove();
-
-  setTimeout(()=>{
-
-    URL.revokeObjectURL(url);
-
-  },1000);
-
-}
-
-function exportCSV(){
-
-  const rows=[
-
-    [
-
-      "Tanggal",
-
-      "Jenis",
-
-      "Kategori",
-
-      "Keterangan",
-
-      "Nominal"
-
-    ],
-
-    ...transactions.map(t=>[
-
-      t.date,
-
-      t.type,
-
-      t.category,
-
-      t.note,
-
-      t.amount
-
-    ])
-
-  ];
-
-  const csv=rows.map(row=>
-
-    row.map(value=>
-
-      '"'+String(value)
-
-        .replace(/"/g,'""')+'"'
-
-    ).join(",")
-
-  ).join("\r\n");
-
-  download(
-
-    "\uFEFF"+csv,
-
-    "scholar-ledger-transactions.csv",
-
-    "text/csv;charset=utf-8"
-
-  );
-
-}
-
-function exportJSON(){
-
-  const backup={
-
-    app:"Scholar Ledger",
-
-    version:3,
-
-    exportedAt:new Date().toISOString(),
-
-    settings,
-
-    transactions
-
-  };
-
-  download(
-
-    JSON.stringify(backup,null,2),
-
-    "scholar-ledger-backup.json",
-
-    "application/json"
-
-  );
-
-}
-
-async function restoreJSON(){
-
-  const file=$("restoreFile").files[0];
-
-  if(!file){
-
-    alert("Pilih file backup JSON terlebih dahulu.");
-
-    return;
-
-  }
-
-  try{
-
-    const text=await file.text();
-
-    const data=JSON.parse(text);
-
-    const restoredTransactions=
-
-      Array.isArray(data)
-
-      ?data
-
-      :data.transactions;
-
-    if(!Array.isArray(restoredTransactions)||
-
-       !restoredTransactions.every(validTransaction)){
-
-      throw new Error("Format transaksi tidak valid.");
-
-    }
-
-    let restoredSettings=settings;
-
-    if(!Array.isArray(data)&&data.settings){
-
-      const s=data.settings;
-
-      if(!validMoney(s.openingBalance)||
-
-         !s.budgets||
-
-         typeof s.budgets!=="object"||
-
-         Array.isArray(s.budgets)){
-
-        throw new Error("Format pengaturan tidak valid.");
-
-      }
-
-      for(const [month,value] of Object.entries(s.budgets)){
-
-        if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)||
-
-           !validMoney(value)){
-
-          throw new Error("Anggaran tidak valid.");
-
-        }
-
-      }
-
-      restoredSettings={
-
-        openingBalance:s.openingBalance,
-
-        budgets:s.budgets
-
-      };
-
-    }
-
-    if(!confirm(
-
-      "Pemulihan akan menggantikan semua data saat ini. Lanjutkan?"
-
-    ))return;
-
-    // Siapkan data untuk dua kunci penyimpanan.
-
-    const oldTransactions=localStorage.getItem(KEY);
-
-    const oldSettings=localStorage.getItem(SETTINGS_KEY);
-
-    try{
-
-      localStorage.setItem(
-
-        KEY,JSON.stringify(restoredTransactions)
-
-      );
-
-      localStorage.setItem(
-
-        SETTINGS_KEY,JSON.stringify(restoredSettings)
-
-      );
-
-    }catch(e){
-
-      // Kembalikan data lama jika penyimpanan gagal.
-
-      try{
-
-        if(oldTransactions===null){
-
-          localStorage.removeItem(KEY);
-
-        }else{
-
-          localStorage.setItem(KEY,oldTransactions);
-
-        }
-
-        if(oldSettings===null){
-
-          localStorage.removeItem(SETTINGS_KEY);
-
-        }else{
-
-          localStorage.setItem(SETTINGS_KEY,oldSettings);
-
-        }
-
-      }catch(rollbackError){
-
-        console.error(rollbackError);
-
-      }
-
-      throw e;
-
-    }
-
-    transactions=restoredTransactions;
-
-    settings=restoredSettings;
-
-    $("openingBalance").value=
-
-      settings.openingBalance;
-
-    updateBudgetInput();
-
-    render();
-
-    alert("Data berhasil dipulihkan.");
-
-    $("restoreFile").value="";
-
-  }catch(e){
-
-    alert(
-
-      "Gagal memulihkan data: "+e.message
-
-    );
-
-  }
-
-}
-
-function refreshPageData(){
-
-  updateToday();
-
-  render();
-
-}
-
-document.addEventListener(
-
-  "visibilitychange",()=>{
-
-    if(!document.hidden){
-
-      refreshPageData();
-
-    }
-
-  }
-
+const url=URL.createObjectURL(
+new Blob([content],{type:mime})
 );
+const a=document.createElement("a");
+a.href=url;
+a.download=name;
+document.body.append(a);
+a.click();
+a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 
-window.addEventListener(
+$("exportCSV").onclick=()=>{
+const rows=[
+["Tanggal","Jenis","Kategori","Keterangan","Nominal"],
+...transactions.map(t=>[
+t.date,t.type,t.category,t.note,t.amount
+])
+];
 
-  "focus",refreshPageData
+const csv=rows.map(row=>
+row.map(v=>'"'+String(v).replace(/"/g,'""')+'"')
+.join(",")
+).join("\r\n");
 
+download(
+"\uFEFF"+csv,
+"scholar-ledger-transactions.csv",
+"text/csv;charset=utf-8"
 );
+};
+
+$("backup").onclick=()=>{
+download(
+JSON.stringify({
+app:"Scholar Ledger",
+version:4,
+exportedAt:new Date().toISOString(),
+transactions,settings,meta
+},null,2),
+"scholar-ledger-backup.json",
+"application/json"
+);
+};
+
+$("restore").onclick=async()=>{
+const file=$("restoreFile").files[0];
+if(!file){
+alert("Pilih file JSON terlebih dahulu.");
+return;
+}
+
+try{
+const data=JSON.parse(await file.text());
+const list=Array.isArray(data)
+?data:data.transactions;
+
+if(!Array.isArray(list)||
+!list.every(transactionOK)){
+throw new Error("Format transaksi tidak valid.");
+}
+
+const newSettings=data.settings||settings;
+if(!moneyOK(newSettings.openingBalance)||
+!newSettings.budgets||
+typeof newSettings.budgets!=="object"||
+Array.isArray(newSettings.budgets)){
+throw new Error("Format pengaturan tidak valid.");
+}
+
+for(const [m,n] of Object.entries(newSettings.budgets)){
+if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(m)||
+!moneyOK(n)){
+throw new Error("Anggaran tidak valid.");
+}
+}
+
+const newMeta={
+initialized:true,
+startMonth:data.meta?.startMonth||
+currentMonth(),
+readReports:Array.isArray(data.meta?.readReports)
+?data.meta.readReports:[]
+};
+
+if(!confirm(
+"Data saat ini akan digantikan oleh backup. Lanjutkan?"
+))return;
+
+// Simpan salinan keadaan lama untuk pemulihan
+// jika proses penyimpanan mengalami kesalahan.
+const keys=[KEY,SETTINGS,META];
+const previous=keys.map(k=>localStorage.getItem(k));
+
+try{
+store(KEY,list);
+store(SETTINGS,newSettings);
+store(META,newMeta);
+}catch(e){
+keys.forEach((k,i)=>{
+try{
+if(previous[i]===null)localStorage.removeItem(k);
+else localStorage.setItem(k,previous[i]);
+}catch(err){console.error(err)}
+});
+throw e;
+}
+
+transactions=list.map((t,i)=>({
+...t,id:t.id||"restored-"+i
+}));
+settings=newSettings;
+meta=newMeta;
+resetForm();
+showMain();
+alert("Backup berhasil dipulihkan.");
+}catch(e){
+alert("Gagal memulihkan: "+e.message);
+}
+};
+
+function refresh(){
+refreshToday();
+if(meta.initialized)render();
+}
+
+document.addEventListener("visibilitychange",()=>{
+if(!document.hidden)refresh();
+});
+window.addEventListener("focus",refresh);
 
 setType("out");
+refreshToday();
 
-updateToday();
+// Pengguna versi lama yang sudah memiliki
+// saldo awal dan anggaran tidak harus mengisi ulang.
+const existingBudget=budgetFor(currentMonth());
+if(!meta.initialized&&
+existingBudget>0){
+meta.initialized=true;
+try{store(META,meta)}catch(e){}
+}
 
-updateBudgetInput();
-
-render();
+if(meta.initialized)showMain();
+else showSetup(false);
 
 </script>
-
 </body>
-
 </html>
