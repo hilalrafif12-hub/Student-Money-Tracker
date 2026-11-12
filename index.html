@@ -1,0 +1,1193 @@
+
+
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="theme-color" content="#0b1426">
+
+<title>Student Money Tracker</title>
+
+<style>
+
+:root{
+
+  --bg:#0b1426;
+
+  --card:#14243c;
+
+  --card2:#1b3150;
+
+  --line:#304461;
+
+  --blue:#4388f5;
+
+  --blue-light:#a9caff;
+
+  --white:#f3f6ff;
+
+  --muted:#a5b6d1;
+
+  --green:#91dfbc;
+
+  --red:#ffb1b8;
+
+}
+
+*{box-sizing:border-box}
+
+body{
+
+  margin:0;
+
+  background:var(--bg);
+
+  color:var(--white);
+
+  font-family:Georgia,"Times New Roman",serif;
+
+  line-height:1.5;
+
+}
+
+button,input,select{font:inherit}
+
+button{cursor:pointer}
+
+header{
+
+  background:linear-gradient(145deg,#101d36,#183b68);
+
+  padding:30px 20px 65px;
+
+}
+
+.header-inner,.wrap{
+
+  max-width:680px;
+
+  margin:auto;
+
+}
+
+header small{
+
+  color:var(--blue-light);
+
+  letter-spacing:2px;
+
+  font-size:11px;
+
+}
+
+h1{font-size:29px;margin:5px 0}
+
+h2{font-size:20px;margin:0 0 15px}
+
+p{margin:6px 0}
+
+.muted{color:var(--muted)}
+
+.wrap{
+
+  padding:0 16px 100px;
+
+  margin-top:-40px;
+
+}
+
+.card{
+
+  background:var(--card);
+
+  border:1px solid var(--line);
+
+  border-radius:20px;
+
+  padding:20px;
+
+  margin-bottom:17px;
+
+  box-shadow:0 8px 25px #0002;
+
+}
+
+.balance{
+
+  background:linear-gradient(145deg,#1b3559,#14243c);
+
+}
+
+.balance-label{color:var(--blue-light)}
+
+.amount{
+
+  font-size:34px;
+
+  font-weight:bold;
+
+  margin:8px 0 18px;
+
+  overflow-wrap:anywhere;
+
+}
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:10px;
+
+}
+
+.stat{
+
+  background:#203653;
+
+  padding:14px;
+
+  border-radius:12px;
+
+}
+
+.stat small{
+
+  color:var(--muted);
+
+  display:block;
+
+}
+
+.stat b{
+
+  display:block;
+
+  font-size:17px;
+
+  margin-top:6px;
+
+  overflow-wrap:anywhere;
+
+}
+
+.positive{color:var(--green)}
+
+.negative{color:var(--red)}
+
+.date-box{
+
+  background:#213b60;
+
+  border:1px solid #3d608d;
+
+  border-radius:12px;
+
+  padding:13px;
+
+  color:#dceaff;
+
+  margin-bottom:15px;
+
+}
+
+label{
+
+  display:block;
+
+  margin:14px 0 6px;
+
+  color:var(--blue-light);
+
+  font-size:14px;
+
+}
+
+input,select{
+
+  width:100%;
+
+  background:#0e1b30;
+
+  color:white;
+
+  border:1px solid #415674;
+
+  border-radius:11px;
+
+  padding:14px;
+
+  font-size:16px;
+
+  outline:none;
+
+}
+
+input:focus,select:focus{
+
+  border-color:#80b4ff;
+
+}
+
+input::placeholder{color:#7f91ad}
+
+button{
+
+  border:0;
+
+  border-radius:11px;
+
+  padding:13px;
+
+  font-weight:bold;
+
+}
+
+.primary{
+
+  width:100%;
+
+  margin-top:20px;
+
+  background:var(--blue);
+
+  color:white;
+
+}
+
+.tabs{display:flex;gap:9px}
+
+.tabs button{
+
+  flex:1;
+
+  background:#263b58;
+
+  color:#c6d7ef;
+
+}
+
+.tabs button.active{
+
+  background:#3879df;
+
+  color:white;
+
+}
+
+.item{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:flex-start;
+
+  gap:10px;
+
+  padding:14px 0;
+
+  border-bottom:1px solid var(--line);
+
+}
+
+.item:last-child{border-bottom:0}
+
+.item small{
+
+  color:var(--muted);
+
+  display:block;
+
+  margin-top:4px;
+
+}
+
+.item-right{text-align:right}
+
+.delete{
+
+  display:block;
+
+  background:transparent;
+
+  color:#aebed5;
+
+  padding:5px 0;
+
+  font-size:12px;
+
+  margin-left:auto;
+
+}
+
+.day-title{
+
+  color:var(--blue-light);
+
+  font-weight:bold;
+
+  margin:20px 0 4px;
+
+}
+
+.bar{
+
+  height:9px;
+
+  background:#263b58;
+
+  border-radius:20px;
+
+  overflow:hidden;
+
+  margin:7px 0 15px;
+
+}
+
+.fill{
+
+  height:100%;
+
+  background:linear-gradient(90deg,#3879df,#82b9ff);
+
+}
+
+.empty{
+
+  text-align:center;
+
+  color:var(--muted);
+
+  padding:18px;
+
+}
+
+.actions{display:flex;gap:8px;margin-top:15px}
+
+.actions button{
+
+  flex:1;
+
+  background:#263b58;
+
+  color:#d8e8ff;
+
+}
+
+.notice{
+
+  font-size:12px;
+
+  color:var(--muted);
+
+  margin-top:12px;
+
+}
+
+footer{
+
+  text-align:center;
+
+  padding:12px 20px 35px;
+
+  color:var(--muted);
+
+  font-size:12px;
+
+}
+
+@media(max-width:360px){
+
+  .grid{grid-template-columns:1fr}
+
+  .amount{font-size:28px}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="header-inner">
+
+<small>STUDENT MONEY TRACKER</small>
+
+<h1>My Finance</h1>
+
+<p class="muted">Your money, your future.</p>
+
+</div>
+
+</header>
+
+<main class="wrap">
+
+<section class="card balance">
+
+<div class="balance-label">Total Saldo</div>
+
+<div class="amount" id="balance">Rp0</div>
+
+<div class="grid">
+
+  <div class="stat">
+
+    <small>Total pemasukan</small>
+
+    <b class="positive" id="income">Rp0</b>
+
+  </div>
+
+  <div class="stat">
+
+    <small>Total pengeluaran</small>
+
+    <b class="negative" id="expense">Rp0</b>
+
+  </div>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>Catat Transaksi</h2>
+
+<div class="date-box">
+
+  <div id="todayLabel">Memuat tanggal...</div>
+
+  <small class="muted">
+
+    Tanggal otomatis mengikuti perangkat
+
+  </small>
+
+</div>
+
+<div class="tabs">
+
+  <button id="outBtn" class="active"
+
+    onclick="setType('out')">
+
+    Pengeluaran
+
+  </button>
+
+  <button id="inBtn"
+
+    onclick="setType('in')">
+
+    Pemasukan
+
+  </button>
+
+</div>
+
+<form id="form">
+
+  <label>Nominal (Rp)</label>
+
+  <input
+
+    id="nominal"
+
+    type="number"
+
+    min="1"
+
+    step="1"
+
+    placeholder="Contoh: 20000"
+
+    required
+
+  >
+
+  <label>Keterangan</label>
+
+  <input
+
+    id="note"
+
+    maxlength="120"
+
+    placeholder="Contoh: Makan siang"
+
+    required
+
+  >
+
+  <label>Kategori</label>
+
+  <select id="category"></select>
+
+  <button class="primary" type="submit">
+
+    + Simpan Transaksi
+
+  </button>
+
+</form>
+
+<p class="notice">
+
+  Setiap transaksi baru otomatis menggunakan
+
+  tanggal saat tombol simpan ditekan.
+
+</p>
+
+</section>
+
+<section class="card">
+
+<h2>Evaluasi Bulanan</h2>
+
+<label>Pilih bulan laporan</label>
+
+<input type="month" id="month">
+
+<div class="grid" style="margin-top:15px">
+
+  <div class="stat">
+
+    <small>Pemasukan bulan ini</small>
+
+    <b id="monthIn">Rp0</b>
+
+  </div>
+
+  <div class="stat">
+
+    <small>Pengeluaran bulan ini</small>
+
+    <b id="monthOut">Rp0</b>
+
+  </div>
+
+</div>
+
+<h2 style="margin-top:22px">
+
+  Alokasi Pengeluaran
+
+</h2>
+
+<div id="breakdown"></div>
+
+</section>
+
+<section class="card">
+
+<h2>Riwayat Harian</h2>
+
+<p class="muted">
+
+  Transaksi dikelompokkan otomatis berdasarkan hari.
+
+</p>
+
+<div id="history"></div>
+
+<div class="actions">
+
+  <button onclick="exportCSV()">Ekspor CSV</button>
+
+  <button onclick="exportJSON()">Backup JSON</button>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+
+Student Money Tracker · Midnight Blue Edition
+
+</footer>
+
+<script>
+
+const KEY="student-money-tracker-v1";
+
+const outCats=[
+
+ "Makan & Minum",
+
+ "Jajan",
+
+ "Nongkrong",
+
+ "Transportasi",
+
+ "Kebutuhan Kuliah",
+
+ "Tagihan",
+
+ "Laundry",
+
+ "Kesehatan",
+
+ "Tabungan",
+
+ "Investasi",
+
+ "Lainnya"
+
+];
+
+const inCats=[
+
+ "Uang Bulanan",
+
+ "Bantuan Keluarga",
+
+ "Penghasilan",
+
+ "Hadiah",
+
+ "Lainnya"
+
+];
+
+let type="out";
+
+let transactions=[];
+
+try{
+
+ const saved=JSON.parse(
+
+  localStorage.getItem(KEY)||"[]"
+
+ );
+
+ if(Array.isArray(saved)){
+
+  transactions=saved;
+
+ }
+
+}catch(e){
+
+ console.error(e);
+
+}
+
+const $=id=>document.getElementById(id);
+
+const rupiah=n=>
+
+ new Intl.NumberFormat("id-ID",{
+
+  style:"currency",
+
+  currency:"IDR",
+
+  maximumFractionDigits:0
+
+ }).format(n);
+
+function localDate(){
+
+ const d=new Date();
+
+ const y=d.getFullYear();
+
+ const m=String(d.getMonth()+1).padStart(2,"0");
+
+ const day=String(d.getDate()).padStart(2,"0");
+
+ return `${y}-${m}-${day}`;
+
+}
+
+function fullDate(dateString){
+
+ const [y,m,d]=dateString.split("-").map(Number);
+
+ const date=new Date(y,m-1,d);
+
+ return new Intl.DateTimeFormat("id-ID",{
+
+  weekday:"long",
+
+  day:"numeric",
+
+  month:"long",
+
+  year:"numeric"
+
+ }).format(date);
+
+}
+
+function updateToday(){
+
+ $("todayLabel").textContent=
+
+  "📅 "+fullDate(localDate());
+
+}
+
+$("month").value=localDate().slice(0,7);
+
+updateToday();
+
+function setType(t){
+
+ type=t;
+
+ $("outBtn").classList.toggle(
+
+  "active",t==="out"
+
+ );
+
+ $("inBtn").classList.toggle(
+
+  "active",t==="in"
+
+ );
+
+ const cats=t==="out"?outCats:inCats;
+
+ $("category").replaceChildren(
+
+  ...cats.map(c=>new Option(c,c))
+
+ );
+
+}
+
+setType("out");
+
+function save(){
+
+ localStorage.setItem(
+
+  KEY,JSON.stringify(transactions)
+
+ );
+
+ render();
+
+}
+
+$("form").addEventListener("submit",e=>{
+
+ e.preventDefault();
+
+ const amount=Number($("nominal").value);
+
+ const note=$("note").value.trim();
+
+ if(!Number.isSafeInteger(amount)||amount<=0){
+
+  alert("Masukkan nominal yang valid.");
+
+  return;
+
+ }
+
+ if(!note){
+
+  alert("Isi keterangan transaksi.");
+
+  return;
+
+ }
+
+ const transaction={
+
+  id:crypto.randomUUID(),
+
+  type,
+
+  amount,
+
+  note,
+
+  category:$("category").value,
+
+  date:localDate(),
+
+  createdAt:new Date().toISOString()
+
+ };
+
+ try{
+
+  const updated=[...transactions,transaction];
+
+  localStorage.setItem(KEY,JSON.stringify(updated));
+
+  transactions=updated;
+
+  $("nominal").value="";
+
+  $("note").value="";
+
+  updateToday();
+
+  render();
+
+  alert("Transaksi berhasil disimpan!");
+
+ }catch(err){
+
+  alert("Penyimpanan gagal. Periksa browser.");
+
+ }
+
+});
+
+$("month").addEventListener("change",render);
+
+function el(tag,txt,cls){
+
+ const x=document.createElement(tag);
+
+ if(txt!==undefined)x.textContent=txt;
+
+ if(cls)x.className=cls;
+
+ return x;
+
+}
+
+function render(){
+
+ const totalIn=transactions
+
+  .filter(t=>t.type==="in")
+
+  .reduce((s,t)=>s+t.amount,0);
+
+ const totalOut=transactions
+
+  .filter(t=>t.type==="out")
+
+  .reduce((s,t)=>s+t.amount,0);
+
+ $("balance").textContent=
+
+  rupiah(totalIn-totalOut);
+
+ $("income").textContent=rupiah(totalIn);
+
+ $("expense").textContent=rupiah(totalOut);
+
+ const selected=transactions.filter(t=>
+
+  t.date.startsWith($("month").value)
+
+ );
+
+ const mi=selected
+
+  .filter(t=>t.type==="in")
+
+  .reduce((s,t)=>s+t.amount,0);
+
+ const mo=selected
+
+  .filter(t=>t.type==="out")
+
+  .reduce((s,t)=>s+t.amount,0);
+
+ $("monthIn").textContent=rupiah(mi);
+
+ $("monthOut").textContent=rupiah(mo);
+
+ const groups={};
+
+ selected
+
+  .filter(t=>t.type==="out")
+
+  .forEach(t=>{
+
+   groups[t.category]=
+
+    (groups[t.category]||0)+t.amount;
+
+  });
+
+ const box=$("breakdown");
+
+ box.replaceChildren();
+
+ Object.entries(groups)
+
+  .sort((a,b)=>b[1]-a[1])
+
+  .forEach(([name,value])=>{
+
+   const r=el(
+
+    "div",
+
+    name+" — "+rupiah(value)
+
+   );
+
+   const bar=el("div",undefined,"bar");
+
+   const fill=el("div",undefined,"fill");
+
+   fill.style.width=
+
+    (mo?value/mo*100:0)+"%";
+
+   bar.append(fill);
+
+   box.append(r,bar);
+
+  });
+
+ if(!Object.keys(groups).length){
+
+  box.append(
+
+   el("p","Belum ada pengeluaran bulan ini.","empty")
+
+  );
+
+ }
+
+ const history=$("history");
+
+ history.replaceChildren();
+
+ const sorted=[...transactions].sort((a,b)=>{
+
+  const dateCompare=b.date.localeCompare(a.date);
+
+  if(dateCompare!==0)return dateCompare;
+
+  return (b.createdAt||"").localeCompare(
+
+   a.createdAt||""
+
+  );
+
+ });
+
+ let lastDate="";
+
+ sorted.slice(0,100).forEach(t=>{
+
+  if(t.date!==lastDate){
+
+   lastDate=t.date;
+
+   history.append(
+
+    el("div",fullDate(t.date),"day-title")
+
+   );
+
+  }
+
+  const item=el("div",undefined,"item");
+
+  const left=el("div");
+
+  left.append(
+
+   el("b",t.note),
+
+   el("small",t.category)
+
+  );
+
+  const right=el(
+
+   "div",undefined,"item-right"
+
+  );
+
+  const value=el(
+
+   "b",
+
+   (t.type==="out"?"−":"+")+
+
+    rupiah(t.amount),
+
+   t.type==="out"?"negative":"positive"
+
+  );
+
+  const del=el("button","Hapus","delete");
+
+  del.onclick=()=>{
+
+   if(confirm("Hapus transaksi ini?")){
+
+    const updated=transactions.filter(
+
+     x=>x.id!==t.id
+
+    );
+
+    try{
+
+     localStorage.setItem(
+
+      KEY,JSON.stringify(updated)
+
+     );
+
+     transactions=updated;
+
+     render();
+
+    }catch(err){
+
+     alert("Gagal menghapus transaksi.");
+
+    }
+
+   }
+
+  };
+
+  right.append(value,del);
+
+  item.append(left,right);
+
+  history.append(item);
+
+ });
+
+ if(!sorted.length){
+
+  history.append(
+
+   el("p","Belum ada transaksi.","empty")
+
+  );
+
+ }
+
+}
+
+function download(content,name,mime){
+
+ const url=URL.createObjectURL(
+
+  new Blob([content],{type:mime})
+
+ );
+
+ const a=document.createElement("a");
+
+ a.href=url;
+
+ a.download=name;
+
+ document.body.append(a);
+
+ a.click();
+
+ a.remove();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+}
+
+function exportJSON(){
+
+ download(
+
+  JSON.stringify(transactions,null,2),
+
+  "student-money-backup.json",
+
+  "application/json"
+
+ );
+
+}
+
+function exportCSV(){
+
+ const rows=[
+
+  ["Tanggal","Jenis","Kategori",
+
+   "Keterangan","Nominal"],
+
+  ...transactions.map(t=>[
+
+   t.date,t.type,t.category,t.note,t.amount
+
+  ])
+
+ ];
+
+ const csv=rows.map(r=>
+
+  r.map(v=>
+
+   '"'+String(v).replace(/"/g,'""')+'"'
+
+  ).join(",")
+
+ ).join("\r\n");
+
+ download(
+
+  "\uFEFF"+csv,
+
+  "student-money-transactions.csv",
+
+  "text/csv;charset=utf-8"
+
+ );
+
+}
+
+document.addEventListener(
+
+ "visibilitychange",()=>{
+
+  if(!document.hidden){
+
+   updateToday();
+
+   render();
+
+  }
+
+ }
+
+);
+
+window.addEventListener("focus",updateToday);
+
+render();
+
+</script>
+
+</body>
+
+</html>
