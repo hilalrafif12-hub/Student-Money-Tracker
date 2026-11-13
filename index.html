@@ -5,8 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0f172a">
-<title>Scholar Ledger 5.1</title>
+<title>Scholar Ledger | Student Money Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg:#080f20;
@@ -134,6 +135,55 @@ input:focus,select:focus{
   box-shadow:0 0 0 3px #38bdf826;
 }
 input::placeholder{color:#7f94b0}
+
+/* SATU TAMPILAN TANGGAL */
+.date-wrap{
+  position:relative;
+  width:100%;
+  min-height:54px;
+  border:1px solid #438bb8;
+  border-radius:12px;
+  background:#0b172b;
+  overflow:hidden;
+}
+.date-display{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:54px;
+  padding:12px 36px 12px 16px;
+  font-size:15px;
+  font-weight:600;
+  text-align:center;
+  pointer-events:none;
+}
+.date-display::before{
+  content:"📅";
+  font-size:18px;
+}
+.date-wrap input[type=date]{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+  z-index:2;
+  font-size:16px;
+}
+.date-wrap:focus-within{
+  outline:2px solid var(--cyan);
+  outline-offset:2px;
+}
+.date-arrow{
+  position:absolute;
+  right:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#9db0cb;
+  pointer-events:none;
+}
 .btn{
   border:0;
   border-radius:11px;
@@ -308,6 +358,7 @@ dialog::backdrop{background:#000a}
   .wide{grid-column:auto}
   .metric{padding:10px}
   .metric strong{font-size:12px}
+  .date-display{font-size:13px}
 }
 </style>
 </head>
@@ -374,11 +425,16 @@ dialog::backdrop{background:#000a}
     Masukkan pengeluaran dan pemasukan, kemudian simpan semuanya sekaligus.
   </p>
 
-  <label>Tanggal Transaksi</label>
-  <input type="date" id="entryDate">
-  <div class="notice" id="datePreview" style="margin-top:10px"></div>
-  <p class="sub">
-    Tanggal ini berlaku untuk semua baris. Jam pencatatan disimpan otomatis.
+  <label for="entryDate">Tanggal Transaksi</label>
+  <div class="date-wrap">
+    <div class="date-display" id="dateDisplay">
+      Pilih Tanggal
+    </div>
+    <span class="date-arrow">⌄</span>
+    <input type="date" id="entryDate" aria-label="Pilih tanggal transaksi">
+  </div>
+  <p class="sub" style="margin-top:10px">
+    Tanggal berlaku untuk semua baris. Jam pencatatan disimpan otomatis.
   </p>
 
   <div class="divider"></div>
@@ -415,7 +471,7 @@ dialog::backdrop{background:#000a}
     💾 Simpan Semua Transaksi
   </button>
   <p class="sub" style="text-align:center">
-    Setiap baris akan disimpan sebagai transaksi terpisah.
+    Setiap baris disimpan sebagai transaksi terpisah.
   </p>
 </section>
 
@@ -474,6 +530,10 @@ dialog::backdrop{background:#000a}
 <script>
 "use strict";
 
+/*
+  Kunci penyimpanan tetap sama dengan versi 5.1.
+  Jadi, transaksi yang sudah dicatat tidak perlu direset.
+*/
 const KEY="scholar-ledger-v5-1";
 const $=id=>document.getElementById(id);
 
@@ -497,7 +557,9 @@ function localDate(d=new Date()){
   return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
 }
 
-function monthNow(){return localDate().slice(0,7)}
+function monthNow(){
+  return localDate().slice(0,7);
+}
 
 function validMonth(m){
   return /^\d{4}-(0[1-9]|1[0-2])$/.test(m);
@@ -512,7 +574,10 @@ function validDate(s){
 function dateFull(s){
   if(!validDate(s))return "Tanggal tidak valid";
   return new Intl.DateTimeFormat("id-ID",{
-    weekday:"long",day:"numeric",month:"long",year:"numeric"
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric"
   }).format(new Date(s+"T12:00:00"));
 }
 
@@ -526,8 +591,10 @@ function timeLabel(s){
   const d=new Date(s);
   if(isNaN(d))return "--.--";
   return new Intl.DateTimeFormat("id-ID",{
-    hour:"2-digit",minute:"2-digit",
-    hour12:false,timeZone:"Asia/Jakarta"
+    hour:"2-digit",
+    minute:"2-digit",
+    hour12:false,
+    timeZone:"Asia/Jakarta"
   }).format(d).replace(":","." )+" WIB";
 }
 
@@ -554,12 +621,15 @@ function load(){
     const d=JSON.parse(localStorage.getItem(KEY));
     if(!d||typeof d!=="object")return emptyDB();
     return {
-      ...emptyDB(),...d,
+      ...emptyDB(),
+      ...d,
       transactions:Array.isArray(d.transactions)?d.transactions:[],
       budgets:d.budgets&&typeof d.budgets==="object"?d.budgets:{},
       readReports:Array.isArray(d.readReports)?d.readReports:[]
     };
-  }catch{return emptyDB()}
+  }catch{
+    return emptyDB();
+  }
 }
 
 let db=load();
@@ -586,7 +656,8 @@ document.querySelectorAll(".money").forEach(moneyInput);
 
 function budgetFor(month){
   const keys=Object.keys(db.budgets)
-    .filter(m=>validMonth(m)&&m<=month).sort();
+    .filter(m=>validMonth(m)&&m<=month)
+    .sort();
   return keys.length?db.budgets[keys[keys.length-1]]:0;
 }
 
@@ -597,7 +668,9 @@ function forMonth(month){
 function totals(items){
   const result={in:0,out:0};
   items.forEach(t=>{
-    if(t.type==="in"||t.type==="out")result[t.type]+=t.amount;
+    if(t.type==="in"||t.type==="out"){
+      result[t.type]+=t.amount;
+    }
   });
   return result;
 }
@@ -634,11 +707,16 @@ function render(){
   renderNotifications();
 }
 
+/*
+  PERBAIKAN UTAMA:
+  Hanya satu kolom tanggal yang terlihat.
+  Teksnya menampilkan nama hari dan bulan lengkap.
+*/
 function updateDate(){
   const date=$("entryDate").value;
-  $("datePreview").textContent=validDate(date)
-    ?"📅 "+dateFull(date)
-    :"Pilih tanggal yang valid.";
+  $("dateDisplay").textContent=validDate(date)
+    ?dateFull(date)
+    :"Pilih Tanggal";
 }
 
 function addRow(type){
@@ -708,13 +786,16 @@ function renumber(type){
 
 function updateDraft(){
   let income=0,expense=0;
+
   document.querySelectorAll(".entry").forEach(el=>{
     const n=digits(el.querySelector(".entryAmount").value);
     if(el.dataset.type==="in")income+=n;
     else expense+=n;
   });
+
   $("inDraft").textContent=money(income);
   $("outDraft").textContent=money(expense);
+
   const net=income-expense;
   $("netDraft").textContent=(net<0?"−":"+")+money(Math.abs(net));
   $("netDraft").className=net<0?"red":"green";
@@ -732,6 +813,7 @@ function resetRows(){
 
 function collect(){
   const date=$("entryDate").value;
+
   if(!validDate(date)||date>localDate()){
     alert("Tanggal transaksi tidak valid atau berada di masa depan.");
     return null;
@@ -762,7 +844,13 @@ function collect(){
       id:typeof crypto!=="undefined"&&crypto.randomUUID
         ?crypto.randomUUID()
         :Date.now()+"-"+Math.random().toString(36).slice(2),
-      date,type,amount,category,note,extra,createdAt:now
+      date,
+      type,
+      amount,
+      category,
+      note,
+      extra,
+      createdAt:now
     });
   }
 
@@ -770,6 +858,7 @@ function collect(){
     alert("Isi minimal satu transaksi.");
     return null;
   }
+
   return result;
 }
 
@@ -854,42 +943,61 @@ function editItem(id){
 
   const raw=prompt("Nominal transaksi:",t.amount.toLocaleString("id-ID"));
   if(raw===null)return;
+
   const amount=digits(raw);
   if(amount<=0||!Number.isSafeInteger(amount)){
-    alert("Nominal tidak valid.");return;
+    alert("Nominal tidak valid.");
+    return;
   }
 
   const note=prompt("Keterangan:",t.note);
   if(note===null)return;
-  if(!note.trim()){alert("Keterangan wajib diisi.");return;}
+  if(!note.trim()){
+    alert("Keterangan wajib diisi.");
+    return;
+  }
 
   const category=prompt("Kategori:",t.category);
   if(category===null)return;
   if(!CATS[t.type].includes(category.trim())){
-    alert("Kategori tidak sesuai pilihan yang tersedia.");return;
+    alert("Kategori tidak sesuai pilihan yang tersedia.");
+    return;
   }
 
   const extra=prompt("Keterangan tambahan:",t.extra||"");
   if(extra===null)return;
 
   const old={...t};
+
   Object.assign(t,{
-    amount,note:note.trim().slice(0,120),
-    category:category.trim(),extra:extra.trim().slice(0,200)
+    amount,
+    note:note.trim().slice(0,120),
+    category:category.trim(),
+    extra:extra.trim().slice(0,200)
   });
 
-  if(!save()){Object.assign(t,old);return;}
+  if(!save()){
+    Object.assign(t,old);
+    return;
+  }
+
   render();
 }
 
 function deleteItem(id){
   const t=db.transactions.find(x=>x.id===id);
   if(!t)return;
+
   if(!confirm("Hapus transaksi "+t.note+" ("+money(t.amount)+")?"))return;
 
   const old=db.transactions;
   db.transactions=old.filter(x=>x.id!==id);
-  if(!save()){db.transactions=old;return;}
+
+  if(!save()){
+    db.transactions=old;
+    return;
+  }
+
   render();
 }
 
@@ -925,10 +1033,22 @@ function reportHTML(month){
   return `<div class="report">
     <h3>Evaluasi ${safe(monthFull(month))}</h3>
     <div class="grid">
-      <div class="metric"><small>Pemasukan</small><strong class="green">${money(s.in)}</strong></div>
-      <div class="metric"><small>Pengeluaran</small><strong class="red">${money(s.out)}</strong></div>
-      <div class="metric"><small>Anggaran</small><strong>${money(budget)}</strong></div>
-      <div class="metric"><small>Sisa Anggaran</small><strong class="${left<0?"red":"green"}">${money(left)}</strong></div>
+      <div class="metric">
+        <small>Pemasukan</small>
+        <strong class="green">${money(s.in)}</strong>
+      </div>
+      <div class="metric">
+        <small>Pengeluaran</small>
+        <strong class="red">${money(s.out)}</strong>
+      </div>
+      <div class="metric">
+        <small>Anggaran</small>
+        <strong>${money(budget)}</strong>
+      </div>
+      <div class="metric">
+        <small>Sisa Anggaran</small>
+        <strong class="${left<0?"red":"green"}">${money(left)}</strong>
+      </div>
     </div>
     <p class="sub" style="margin-top:15px">
       Penggunaan anggaran: ${budget?pct.toFixed(1).replace(".",",")+"%":"Belum ditetapkan"}
@@ -995,7 +1115,11 @@ function renderNotifications(){
 }
 
 function showReport(month){
-  if(!validMonth(month)){alert("Pilih bulan valid.");return;}
+  if(!validMonth(month)){
+    alert("Pilih bulan valid.");
+    return;
+  }
+
   $("reportMonth").value=month;
   $("report").innerHTML=reportHTML(month);
 
@@ -1010,11 +1134,13 @@ function download(name,content,type){
   const blob=new Blob([content],{type});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
+
   a.href=url;
   a.download=name;
   document.body.appendChild(a);
   a.click();
   a.remove();
+
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
@@ -1023,7 +1149,8 @@ function exportCSV(){
     ["Tanggal","Jam Pencatatan (WIB)","Jenis","Nominal",
      "Kategori","Keterangan","Keterangan Tambahan"],
     ...db.transactions.map(t=>[
-      t.date,timeLabel(t.createdAt),
+      t.date,
+      timeLabel(t.createdAt),
       t.type==="in"?"Pemasukan":"Pengeluaran",
       t.amount,t.category,t.note,t.extra
     ])
@@ -1046,8 +1173,10 @@ function backup(){
 
 async function restore(file){
   if(!file)return;
+
   try{
     const payload=JSON.parse(await file.text());
+
     if(payload.app!=="Scholar Ledger"||
        payload.version!=="5.1"||
        !payload.data||
@@ -1073,9 +1202,15 @@ async function restore(file){
     }
 
     if(!confirm("Pulihkan backup? Data saat ini akan digantikan."))return;
+
     const old=db;
     db=payload.data;
-    if(!save()){db=old;return;}
+
+    if(!save()){
+      db=old;
+      return;
+    }
+
     resetRows();
     show();
     alert("Backup berhasil dipulihkan.");
@@ -1087,7 +1222,8 @@ async function restore(file){
 $("startBtn").onclick=()=>{
   const bRaw=$("startBalance").value.trim();
   const aRaw=$("startBudget").value.trim();
-  const b=digits(bRaw),a=digits(aRaw);
+  const b=digits(bRaw);
+  const a=digits(aRaw);
 
   if(!bRaw||!aRaw||!Number.isSafeInteger(b)||!Number.isSafeInteger(a)){
     alert("Isi saldo awal dan anggaran dengan benar.");
@@ -1098,17 +1234,22 @@ $("startBtn").onclick=()=>{
   db.balance=b;
   db.budgets[monthNow()]=a;
   db.startMonth=monthNow();
+
   if(save())show();
 };
 
 $("addOut").onclick=()=>addRow("out");
 $("addIn").onclick=()=>addRow("in");
 $("saveAll").onclick=saveAll;
+
+/* Memperbarui tanggal pada satu kolom yang sama */
 $("entryDate").addEventListener("change",updateDate);
+$("entryDate").addEventListener("input",updateDate);
 
 $("history").addEventListener("click",e=>{
   const b=e.target.closest("button[data-action]");
   if(!b)return;
+
   if(b.dataset.action==="edit")editItem(b.dataset.id);
   else deleteItem(b.dataset.id);
 });
@@ -1118,6 +1259,7 @@ $("settingsBtn").onclick=()=>{
     alert("Selesaikan pengaturan awal terlebih dahulu.");
     return;
   }
+
   $("settingBalance").value=db.balance.toLocaleString("id-ID");
   $("settingBudget").value=budgetFor(monthNow()).toLocaleString("id-ID");
   $("settingsDialog").showModal();
@@ -1128,7 +1270,8 @@ $("settingCancel").onclick=()=>$("settingsDialog").close();
 $("settingSave").onclick=()=>{
   const bRaw=$("settingBalance").value.trim();
   const aRaw=$("settingBudget").value.trim();
-  const b=digits(bRaw),a=digits(aRaw);
+  const b=digits(bRaw);
+  const a=digits(aRaw);
 
   if(!bRaw||!aRaw||!Number.isSafeInteger(b)||!Number.isSafeInteger(a)){
     alert("Masukkan nominal yang valid.");
